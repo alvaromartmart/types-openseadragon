@@ -1,0 +1,25 @@
+{
+  "name": "@types/openseadragon",
+  "version": "0.0.1",
+  "dependencies":{
+    "openseadragon":"*"
+  },
+  "description": "Types declaration file for OpenSeadragon",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvaromartmart/types-openseadragon.git"
+  },
+  "keywords": [
+    "openseadragon"
+  ],
+  "author": "Álvaro Martínez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alvaromartmart/types-openseadragon/issues"
+  },
+  "homepage": "https://github.com/alvaromartmart/types-openseadragon#readme"
+}
