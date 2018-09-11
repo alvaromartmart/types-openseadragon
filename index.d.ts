@@ -280,4 +280,27 @@ declare module 'openseadragon'{
         clientX ? : number,
         clientY ? : number
     }
+
+
+    export type OnDrawCallback = (position : Point, size : Point, element : HTMLElement) => null;
+
+    export interface OverlayOptions{
+        element : HTMLElement,
+        location : Point | Rect,
+        placement ? : Placement,
+        onDraw ? : OnDrawCallback,
+        checkResize ? : boolean,
+        width ? : number,
+        height ? : number,
+        rotationMode ? : boolean
+    }
+
+    export class Overlay{
+        constructor(options : OverlayOptions);
+        adjust(position : Point, size : Point) : null;
+        destroy() : null;
+        drawHTML(container : HTMLElement) : null;
+        getBounds(viewport : Viewport) : Rect;
+        update(location : Point | Rect, placement : Placement);
+    }
   }
