@@ -1,8 +1,8 @@
 {
   "name": "@types/openseadragon",
-  "version": "0.0.1",
-  "dependencies":{
-    "openseadragon":"*"
+  "version": "0.0.2",
+  "dependencies": {
+    "openseadragon": "*"
   },
   "description": "Types declaration file for OpenSeadragon",
   "main": "",
