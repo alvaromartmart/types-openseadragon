@@ -513,7 +513,7 @@ declare module 'openseadragon'{
         constructor(options : Options)
         addHandler(eventName : ViewerEventName,callback:(event)=>any,userData? : object);
         addOnceHandler(eventName : ViewerEventName,callback:(event)=>any,userData? : object, times?:number);
-        addOverlay(element : HTMLElement | string | object, location : Point | Rect, placement : Placement, onDraw : Function) : Viewer;
+        addOverlay(element : HTMLElement | string | object, location : Point | Rect, placement ? : Placement, onDraw ? : Function) : Viewer;
         addReferenceStrip();
         addSimpleImage(options : {url? : string});
         
