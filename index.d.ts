@@ -89,7 +89,7 @@ declare module 'openseadragon'{
 
     export function addEvent(element : Element | string, eventName : string, handler : Function, useCapture ? : boolean);
 
-    export function cancelEvent(event ? : Event);
+    export function cancelEvent(event ? : OSDEvent);
 
     export function capitalizeFirstLetter(value : string) : string;
 
@@ -111,7 +111,7 @@ declare module 'openseadragon'{
 
     export function getElementStyle(element : Element | string) : any; // CSSStyle?
 
-    export function getMousePosition(event ? : Event) : Point;
+    export function getMousePosition(event ? : OSDEvent) : Point;
 
     export function getPageScroll() : Point;
 
@@ -164,7 +164,7 @@ declare module 'openseadragon'{
 
     export function setString(property : string, value : any)
 
-    export function stopEvent(event ? : Event)
+    export function stopEvent(event ? : OSDEvent)
 
     export interface GestureSettings{
         scrollToZoom	?: boolean,
@@ -374,10 +374,10 @@ declare module 'openseadragon'{
     export interface MouseTrackerOptions{
         element	: Element | string,
         startDisabled ? : boolean,
-        clickTimeThreshold : number,	
-        clickDistThreshold : number,	
-        dblClickTimeThreshold : number,
-        dblClickDistThreshold : number,
+        clickTimeThreshold ? : number,	
+        clickDistThreshold ? : number,	
+        dblClickTimeThreshold ? : number,
+        dblClickDistThreshold ? : number,
         stopDelay ? : number,
         enterHandler ? : EventHandler,
         exitHandler ? : EventHandler,
@@ -408,30 +408,30 @@ declare module 'openseadragon'{
 
         constructor(options : MouseTrackerOptions)
 
-        blurHandler(event : Event);
-        clickHandler(event : Event);
-        dblClickHandler(event : Event);
+        blurHandler(event : OSDEvent);
+        clickHandler(event : OSDEvent);
+        dblClickHandler(event : OSDEvent);
         destroy();
-        dragEndHandler(event : Event);
-        dragHandler(event : Event);
-        enterHandler(event : Event);
-        exitHandler(event : Event);
-        focusHandler(event : Event);
+        dragEndHandler(event : OSDEvent);
+        dragHandler(event : OSDEvent);
+        enterHandler(event : OSDEvent);
+        exitHandler(event : OSDEvent);
+        focusHandler(event : OSDEvent);
         getActivePointerCount() : number;
         getActivePointersListByType(type : string) : GesturePointList;
         getActivePointersListsExceptType(type : string) : GesturePointList[];
-        keyDownHandler(event : Event);
-        keyHandler(event : Event);
-        keyUpHandler(event : Event);
-        moveHandler(event : Event);
-        nonPrimaryPressHandler(event : Event);
-        nonPrimaryReleaseHandler(event : Event);
-        pinchHandler(event : Event);
-        pressHandler(event : Event);
-        releaseHandler(event : Event);
-        scrollHandler(event : Event);
+        keyDownHandler(event : OSDEvent);
+        keyHandler(event : OSDEvent);
+        keyUpHandler(event : OSDEvent);
+        moveHandler(event : OSDEvent);
+        nonPrimaryPressHandler(event : OSDEvent);
+        nonPrimaryReleaseHandler(event : OSDEvent);
+        pinchHandler(event : OSDEvent);
+        pressHandler(event : OSDEvent);
+        releaseHandler(event : OSDEvent);
+        scrollHandler(event : OSDEvent);
         setTracking(track : boolean) : MouseTracker;
-        stopHandler(event : Event);
+        stopHandler(event : OSDEvent);
     }
 
     export type GesturePoint = {
@@ -488,7 +488,7 @@ declare module 'openseadragon'{
         setVisible(visible : boolean);
     }
 
-    type EventHandler = (event : Event)=>null;
+    type EventHandler = (event : OSDEvent) => void;
 
     export class TileSource implements TileSourceOptions{
         constructor(options : TileSourceOptions)
@@ -513,7 +513,7 @@ declare module 'openseadragon'{
         constructor(options : Options)
         addHandler(eventName : ViewerEventName,callback:(event)=>any,userData? : object);
         addOnceHandler(eventName : ViewerEventName,callback:(event)=>any,userData? : object, times?:number);
-        addOverlay(element : HTMLElement | string | object, location : Point | Rect, placement ? : Placement, onDraw ? : Function) : Viewer;
+        addOverlay(element : HTMLElement | string | object, location ? : Point | Rect, placement ? : Placement, onDraw ? : Function) : Viewer;
         addReferenceStrip();
         addSimpleImage(options : {url? : string});
         
@@ -599,7 +599,8 @@ declare module 'openseadragon'{
         toString() : string;
     }
   
-    interface Event extends HTMLElementEventMap{
+    interface OSDEvent extends Event{
+        originalEvent : object,
         position ? : Point,
         clientX ? : number,
         clientY ? : number
