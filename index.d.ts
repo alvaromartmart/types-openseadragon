@@ -1,5 +1,199 @@
 declare module 'openseadragon'{
-  
+    
+    export class Browser {
+        vendor : BROWSERS;
+        version : number;
+        alpha : boolean;
+    }
+
+    export enum BROWSERS {
+        UNKNOWN =    0,
+        IE =         1,
+        FIREFOX =    2,
+        SAFARI =     3,
+        CHROME =     4,
+        OPERA =      5
+    }
+
+    export enum ButtonState {
+        REST,
+        GROUP,
+        HOVER,
+        DOWN
+    }
+
+    export enum ControlAnchor{
+        NONE,	
+        TOP_LEFT,	
+        TOP_RIGHT,	
+        BOTTOM_LEFT,	
+        BOTTOM_RIGHT,	
+        ABSOLUTE
+    }
+
+    export const DEFAULT_SETTINGS : Options;
+
+    export const fullScreenApi : {
+        supportsFullScreen : boolean;
+        isFullScreen : Function;
+        getFullScreenElement : Function;
+        requestFullScreen : Function;
+        exitFullScreen : Function;
+        cancelFullScreen : Function;
+        fullScreenEventName : string;
+        fullScreenErrorEventName : string;
+    }
+
+    export enum OverlayPlacement {
+        CENTER,	
+        TOP_LEFT,	
+        TOP,	
+        TOP_RIGHT,	
+        RIGHT,	
+        BOTTOM_RIGHT,	
+        BOTTOM,	
+        BOTTOM_LEFT,	
+        LEFT
+    }
+
+    export enum OverlayRotationMode {
+        NO_ROTATION,
+        EXACT,
+        BOUNDING_BOX
+    }
+
+    export var pixelDensityRatio : number;
+
+    export enum Placement {
+        CENTER,
+        TOP_LEFT,
+        TOP,
+        TOP_RIGHT,
+        RIGHT,
+        BOTTOM_RIGHT,
+        BOTTOM,
+        BOTTOM_LEFT,
+        LEFT
+    }
+
+    export var supportsCanvas : boolean;
+
+    export var version : {
+        versionStr : string
+        major : number,
+        minor : number,
+        revision : number
+    }
+
+    export function addClass(element : Element | string, className : string);
+
+    export function addEvent(element : Element | string, eventName : string, handler : Function, useCapture ? : boolean);
+
+    export function cancelEvent(event ? : Event);
+
+    export function capitalizeFirstLetter(value : string) : string;
+
+    export function createCallback(object : Object, method : Function, ...args);
+
+    export function delegate(object : Object, method : Function) : Function;
+
+    export function extend();
+
+    export function getCssPropertyWithVendorPrefix(property : string) : string;
+
+    export function getElement(element : string | Element) : Element;
+
+    export function getElementOffset(element : Element | string) : Point;
+
+    export function getElementPosition(element : Element | string) : Point;
+
+    export function getElementSize(element : Element | string) : Point;
+
+    export function getElementStyle(element : Element | string) : any; // CSSStyle?
+
+    export function getMousePosition(event ? : Event) : Point;
+
+    export function getPageScroll() : Point;
+
+    export function getString(property : string) : string;
+
+    export function getUrlParameter(key : string) : string;
+
+    export function getWindowSize() : Point;
+
+    export function imageFormatSupported(extension ? : string) : boolean;
+
+    export function indexOf(array : any[], searchElement : object, fromIndex ? : number);
+
+    // (missing jquery functions)
+
+    export function makeAjaxRequest(options : {
+        url : string,
+        success : Function,
+        error : Function,
+        headers : object,
+        responseType : string,
+        withCredentials ? : boolean
+    }) : XMLHttpRequest;
+
+    export function makeCenteredNode(element : Element | string) : Element;
+
+    export function makeNeutralElement(tagName : string) : Element;
+
+    export function makeTransparentImage(src : string) : Element;
+
+    export function now() : number;
+
+    export function parseJSON(string : string) : object;
+
+    export function parseXml(string : string) : Document;
+
+    export function pointInElement(element : Element | string, point : Point) : boolean;
+
+    export function positiveModulo(number : number, modulo : number) : number;
+
+    export function removeClass(element : Element | string, className : string);
+
+    export function removeEvent(element : Element | string, eventName : string, handler : Function, useCapture ? : boolean);
+
+    export function setElementOpacity(element : Element | string, opacity : number, usesAlpha ? : boolean);
+
+    export function setElementTouchActionNone(element : Element | string)
+
+    export function setPageScroll(point : Point)
+
+    export function setString(property : string, value : any)
+
+    export function stopEvent(event ? : Event)
+
+    export interface GestureSettings{
+        scrollToZoom	?: boolean,
+        clickToZoom	?: boolean,
+        dblClickToZoom	?: boolean,
+        pinchToZoom	?: boolean,
+        flickEnabled	?: boolean,
+        flickMinSpeed	? : number,
+        flickMomentum ? : number
+    }
+
+    interface NavImagesValues {
+        REST : string,
+        GROUP : string,
+        HOVER : string,
+        DOWN : string
+    }
+    export interface NavImages{
+        zoomIn : NavImagesValues,
+        zoomOut : NavImagesValues,
+        home : NavImagesValues,
+        fullpage : NavImagesValues,
+        rotateleft : NavImagesValues,
+        rotateright : NavImagesValues,
+        flip : NavImagesValues,
+        previous : NavImagesValues,
+        next : NavImagesValues
+    }
+
     export interface Options{
         id? : string,
         element ? : HTMLElement,
@@ -118,20 +312,6 @@ declare module 'openseadragon'{
         axajHeaders?: object
     }
   
-    export interface GestureSettings{
-        scrollToZoom	?: boolean,
-        clickToZoom	?: boolean,
-        dblClickToZoom	?: boolean,
-        pinchToZoom	?: boolean,
-        flickEnabled	?: boolean,
-        flickMinSpeed	? : number,
-        flickMomentum ? : number
-    }
-  
-    export interface NavImages{
-  
-    }
-  
     export interface TileSourceOptions{
         url?: string,
         referenceStripThumbnailUrl?: string,
@@ -146,18 +326,172 @@ declare module 'openseadragon'{
         maxLevel?: number,
         getTileUrl? : (l : number,x : number,y : number) => string
     }
-  
+
+    export class Button extends EventSource{
+        currentState : ButtonState;
+        element : Element;
+        fadeDelay : number;
+        fadeLength : number;
+        tracker : MouseTracker;
+
+        constructor(options : {
+            element ? : Element,
+            tooltip ? : string,
+            srcRest	? : string,
+            srcGroup ? : string,
+            srcHover ? : string,
+            srcDown	? : string,
+            fadeDelay ? : number,
+            fadeLength ? : number,
+            onPress ? : EventHandler,
+            onRelease ? : EventHandler,
+            onClick ? : EventHandler,
+            onEnter ? : EventHandler,
+            onExit ? : EventHandler,
+            onFocus ? : EventHandler,
+            onBlur ? : EventHandler,
+        })
+
+        addHandler(eventName : ButtonEventName, handler : EventHandler, userData ? : object);
+
+        addOnceHandler(eventName : ButtonEventName, handler : EventHandler, userData ? : object, times ? : number);
+
+        disable()
+
+        enable()
+
+        getHandler(eventName : ButtonEventName) : (source : ButtonEventName, ...args)=>null;
+
+        raiseEvent(eventName : ButtonEventName, eventArgs : object);
+
+        removeAllHandlers(eventName : ButtonEventName);
+
+        removeHandler(eventName : ButtonEventName, handler : EventHandler);
+
+        
+    }
+
+    export interface MouseTrackerOptions{
+        element	: Element | string,
+        startDisabled ? : boolean,
+        clickTimeThreshold : number,	
+        clickDistThreshold : number,	
+        dblClickTimeThreshold : number,
+        dblClickDistThreshold : number,
+        stopDelay ? : number,
+        enterHandler ? : EventHandler,
+        exitHandler ? : EventHandler,
+        pressHandler ? : EventHandler,
+        nonPrimaryPressHandler ? : EventHandler,
+        releaseHandler ? : EventHandler,
+        nonPrimaryReleaseHandler ? : EventHandler,
+        moveHandler ? : EventHandler,
+        scrollHandler ? : EventHandler,
+        clickHandler ? : EventHandler,
+        dblClickHandler ? : EventHandler,
+        dragHandler ? : EventHandler,
+        dragEndHandler ? : EventHandler,
+        pinchHandler ? : EventHandler,
+        keyDownHandler ? : EventHandler,
+        keyUpHandler ? : EventHandler,
+        keyHandler ? : EventHandler,
+        focusHandler ? : EventHandler,
+        blurHandler ? : EventHandler,
+        userData ? : object,
+    }
+    export class MouseTracker {
+        clickTimeThreshold : number;	
+        clickDistThreshold : number;	
+        dblClickTimeThreshold : number;
+        dblClickDistThreshold : number;
+        element	: Element;
+
+        constructor(options : MouseTrackerOptions)
+
+        blurHandler(event : Event);
+        clickHandler(event : Event);
+        dblClickHandler(event : Event);
+        destroy();
+        dragEndHandler(event : Event);
+        dragHandler(event : Event);
+        enterHandler(event : Event);
+        exitHandler(event : Event);
+        focusHandler(event : Event);
+        getActivePointerCount() : number;
+        getActivePointersListByType(type : string) : GesturePointList;
+        getActivePointersListsExceptType(type : string) : GesturePointList[];
+        keyDownHandler(event : Event);
+        keyHandler(event : Event);
+        keyUpHandler(event : Event);
+        moveHandler(event : Event);
+        nonPrimaryPressHandler(event : Event);
+        nonPrimaryReleaseHandler(event : Event);
+        pinchHandler(event : Event);
+        pressHandler(event : Event);
+        releaseHandler(event : Event);
+        scrollHandler(event : Event);
+        setTracking(track : boolean) : MouseTracker;
+        stopHandler(event : Event);
+    }
+
+    export type GesturePoint = {
+        id : number,
+        type : string,
+        captured : boolean,
+        isPrimary : boolean,
+        insideElementPressed : boolean,
+        insideElement : boolean,
+        speed : number,
+        direction : number,
+        contactPos : Point,
+        contactTime : number,
+        lastPos : Point,
+        lastTime : number,
+        currentPos : Point
+        currentTime : number
+    }
+
+    class GesturePointList{
+        // TODO
+    }
+
+    class ButtonGroup {
+        buttons : Button[];
+        element : Element;
+        tracker : MouseTracker;
+
+        constructor(options : {
+            buttons : Button[],
+            element ? : Element
+        })
+    }
+
+    class Control{
+        anchor : ControlAnchor;
+        autoFade : boolean;
+        container : Element;
+        element : Element;
+        wrapper : Element;
+        constructor(
+            element : Element,
+            options : {
+                anchor ? : ControlAnchor,
+                attachToViewer ? : boolean,
+                autoFade ? : boolean
+            },
+            container : Element
+        );
+
+        destroy();
+        isVisible() : boolean;
+        setOpacity(opacity : number);
+        setVisible(visible : boolean);
+    }
+
+    type EventHandler = (event : Event)=>null;
+
     export class TileSource implements TileSourceOptions{
         constructor(options : TileSourceOptions)
-    }
-  
-    export enum ControlAnchor{
-        NONE,	
-        TOP_LEFT,	
-        TOP_RIGHT,	
-        BOTTOM_LEFT,	
-        BOTTOM_RIGHT,	
-        ABSOLUTE
     }
     
     export type ButtonEventName = "blur" | "click" | "enter" | "exit" | "focus" | "press" | "release";
@@ -187,17 +521,7 @@ declare module 'openseadragon'{
         setFullScreen(fullScreen : boolean) : Viewer;
     }
   
-    export enum Placement {
-        CENTER,
-        TOP_LEFT,
-        TOP,
-        TOP_RIGHT,
-        RIGHT,
-        BOTTOM_RIGHT,
-        BOTTOM,
-        BOTTOM_LEFT,
-        LEFT
-    }
+    
   
     export class Navigator{
         canvas : HTMLCanvasElement;
