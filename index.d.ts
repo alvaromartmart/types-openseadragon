@@ -360,7 +360,7 @@ declare module 'openseadragon'{
 
         enable()
 
-        getHandler(eventName : ButtonEventName) : (source : ButtonEventName, ...args)=>null;
+        getHandler(eventName : ButtonEventName) : (source : ButtonEventName, ...args)=>void;
 
         raiseEvent(eventName : ButtonEventName, eventArgs : object);
 
@@ -607,7 +607,7 @@ declare module 'openseadragon'{
     }
 
 
-    export type OnDrawCallback = (position : Point, size : Point, element : HTMLElement) => null;
+    export type OnDrawCallback = (position : Point, size : Point, element : HTMLElement) => void;
 
     export interface OverlayOptions{
         element : HTMLElement,
@@ -622,9 +622,9 @@ declare module 'openseadragon'{
 
     export class Overlay{
         constructor(options : OverlayOptions);
-        adjust(position : Point, size : Point) : null;
-        destroy() : null;
-        drawHTML(container : HTMLElement) : null;
+        adjust(position : Point, size : Point) : void;
+        destroy() : void;
+        drawHTML(container : HTMLElement) : void;
         getBounds(viewport : Viewport) : Rect;
         update(location : Point | Rect, placement : Placement);
     }
