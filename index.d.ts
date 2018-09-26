@@ -535,8 +535,84 @@ declare module 'openseadragon'{
     }
   
     export class Viewport{
-        getBounds() : Rect;
+        constructor(options : {
+            margins	: object,
+            springStiffness ? : number,
+            animationTime ? : number,
+            minZoomImageRatio ? : number,
+            maxZoomPixelRatio ? : number,
+            visibilityRatio ? : number,
+            wrapHorizontal ? : boolean,
+            wrapVertical ? : boolean,
+            defaultZoomLevel ? : number,
+            minZoomLevel ? : number,
+            maxZoomLevel ? : number,
+            degrees ? : number,
+            homeFillsViewer ? : boolean
+        })
+
+        applyConstraints(immediately ? : boolean) : Viewport;
+        deltaPixelsFromPoints(deltaPoints : Point, current ? : boolean) : Point;
+        deltaPixelsFromPointsNoRotate(deltaPoints : Point, current ? : boolean) : Point;
+        deltaPointsFromPixels(deltaPoints : Point, current ? : boolean) : Point;
+        deltaPointsFromPixelsNoRotate(deltaPoints : Point, current ? : boolean) : Point;
+        ensureVisible(immediately ? : boolean) : Viewport;
+        fitBounds(bounds : Rect, immediately ? : boolean) : Viewport;
+        fitBoundsWithConstraints(bounds : Rect, immediately ? : boolean) : Viewport;
+        fitHorizontally(immediately ? : boolean) : Viewport;
+        fitVertically(immediately ? : boolean) : Viewport;
+        getAspectRatio() : any; //TODO: determine return type
+        getBounds(current ? : boolean) : Rect;
+        getBoundsNoRotate(current ? : boolean) : Rect;
+        getBoundsNoRotateWithMargins(current ? : boolean) : Rect;
+        getBoundsWithMargins(current ? : boolean) : Rect;
+        getCenter(current ? : boolean) : Point; //TODO: check return type
+        getConstrainedBounds(current ? : boolean) : Viewport;
+        getContainerSize() : Point;
+        getFlip() : boolean;
+        getHomeBounds() : Rect;
+        getHomeBoundsNoRotate() : Rect;
+        getHomeZoom() : number;
+        getMargins() : object;
+        getMaxZoom() : number;
+        getMinZoom() : number;
+        getRotation() : number;
+        getZoom(current ? : boolean) : number;
+        goHome(immediately ? : boolean);
+        imageToViewerElementCoordinates(pixel : Point) : Point;
+        imageToViewportCoordinates(position : Point) : Point;
+        imageToViewportCoordinates(imageX : number, imageY : number) : Point;
+        imageToViewportCoordinates(imageX : number, imageY : number, pixelWidth : number, pixelHeight : number) : Point;
+        imageToViewportZoom(imageZoom : number) : number;
+        imageToWindowCoordinates(pixel : Point) : Point;
+        panBy(delta : Point, immediately ? : boolean) : Viewport;
+        panTo(center : Point, immediately ? : boolean) : Viewport;
+        pixelFromPoint(point : Point, current ? : boolean) : Point;
+        pixelFromPointNoRotate(point : Point, current ? : boolean) : Point;
         pointFromPixel(point : Point, current?: boolean) : Point;
+        pointFromPixelNoRotate(point : Point, current?: boolean) : Point;
+        resetContentSize(contentSize : Point) : Viewport;
+        resize() : Viewport;
+        setFlip(state : boolean) : Viewport;
+        setMargins(margins : object) : void; //TODO: determine return type
+        setRotation() : Viewport;
+        toggleFlip() : Viewport;
+        update() : boolean;
+        viewerElementToImageCoordinates(pixel : Point) : Point;
+        viewerElementToViewportCoordinates(pixel : Point) : Point;
+        viewerElementToViewportRectangle(rectangle : Rect) : Rect;
+        viewportToImageCoordinates(position : Point) : Point;
+        viewportToImageCoordinates(viewerX : number, viewerY : number) : Point;
+        viewportToImageRectangle(rectangle : Rect) : Rect;
+        viewportToImageRectangle(viewerX : number, viewerY : number, pointWidth : number, pointHeight : number) : Rect;
+        viewportToImageZoom(viewportZoom : number) : number;
+        viewportToViewerElementCoordinates(point : Point) : Point;
+        viewportToViewerElementRectangle(rectangle : Rect) : Rect;
+        viewportToWindowCoordinates(point : Point) : Point;
+        windowToImageCoordinates(pixel : Point) : Point;
+        windowToViewportCoordinates(pixel : Point) : Point;
+        zoomBy(factor : number, refPoint ? : Point, immediately ? : boolean) : Viewport;
+        zoomTo(factor : number, refPoint ? : Point, immediately ? : boolean) : Viewport;
     }
   
     export class World{
