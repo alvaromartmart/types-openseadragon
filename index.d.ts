@@ -625,11 +625,97 @@ declare module 'openseadragon'{
         context: CanvasRenderingContext2D;
         viewportToDrawerRectangle(rect : Rect) : Rect;
     }
+
+    export class TileCache{
+
+    }
+
+    export class ImageLoader{
+
+    }
   
     export class TiledImage{
-        getBounds() : Rect;
-        imageToViewportRectangle(rect : Rect) : Rect;
-        viewportToImageCoordinates(viewerX : number | Point, ...args : any[]) : Point;
+        constructor(options : {
+            source : TileSource,
+            viewer : Viewer,
+            tileCache :	TileCache,
+            drawer : Drawer,
+            imageLoader	: ImageLoader,
+            x ? : number,
+            y ? : number,
+            width ? : number,
+            height ? : number,
+            fitBounds ? : Rect,
+            fitBoundsPlacement ? : Placement,
+            clip ? : Rect,
+            springStiffness	? : number,
+            animationTime ? : boolean,
+            minZoomImageRatio ? : number,
+            wrapHorizontal ? : boolean,
+            wrapVertical ? : boolean,
+            immediateRender ? : boolean,
+            blendTime ? : number,
+            alwaysBlend ? : boolean,
+            minPixelRatio ? : number,
+            smoothTileEdgesMinZoom ? : number,
+            iOSDevice ? : boolean,
+            opacity ? : number,
+            preload ? : boolean,
+            compositeOperation ? : string,
+            debugMode ? : boolean,
+            placeholderFillStyle ? : string | CanvasGradient | CanvasPattern | Function,
+            crossOriginPolicy ? : string | boolean,
+            ajaxWithCredentials ? : boolean,
+            loadTilesWithAjax ? : boolean,
+            ajaxHeaders	? : object;
+        });
+
+        source : TileSource;
+
+        addHandler(eventName : string, handler : EventHandler, userData ? : object) : void;
+        addOnceHandler(eventName : string, handler : EventHandler, userData ? : object) : void;
+        destroy() : void;
+        draw() : void;
+        fitBounds(bounds : Rect, anchor ? : Placement, immediately ? : boolean) : void;
+        getBounds(current ? : boolean) : Rect;
+        getBoundsNoRotate(current ? : boolean) : Rect;
+        getClip() : Rect | null;
+        getClippedBounds(current ? : boolean) : Rect;
+        getCompositeOperation() : string;
+        getContentSize() : Point;
+        getFullyLoaded() : boolean;
+        getHandler(eventName : string) : void; //TODO: check return value
+        getOpacity() : number;
+        getPreload() : boolean;
+        getRotation(current ? : boolean) : number;
+        imageToViewerElementCoordinats(pixel : Point) : Point;
+        imageToViewportCoordinates(position : Point, current ? : boolean) : Point;
+        imageToViewportCoordinates(imageX : number, imageY : number, current ? : boolean) : Point;
+        imageToViewportRectangle(position : Rect, pixelWidth ? : number, pixelHeight ? : number, current ? : boolean) : Rect;
+        imageToViewportRectangle(imageX : number, imageY : number, pixelWidth ? : number, pixelHeight ? : number, current ? : boolean) : Rect;
+        imageToViewportZoom(imageZoom : number) : number;
+        imageToWindowCoordinates(pixel : Point) : Point;
+        needsDraw() : boolean;
+        raiseEvent(eventName : string, eventArgs : object);
+        removeAllHandlers(eventName : string) : void;
+        removeHandler(eventName : string, handler : EventHandler) : void;
+        reset() : void;
+        setClip(newClip : Rect | null) : void;
+        setCompositeOperation(compositeOperation : string) : void;
+        setHeight(height : number, immediately ? : boolean) : void;
+        setOpacity(opacity : number) : void;
+        setPosition(position : Point, immediately ? : boolean) : void;
+        setPreload(preload : boolean) : void;
+        setRotation(degrees : number, immediately ? : boolean) : void;
+        setWidth(width : number, immediately ? : boolean) : void;
+        update() : boolean;
+        viewerElementToImageCoordinates(pixel : Point) : Point;
+        viewportToImageCoordinates(position : Point, current ? : boolean) : Point;
+        viewportToImageCoordinates(viewerX : number, viewerY : number, current ? : boolean) : Point;
+        viewportToImageRectangle(position : Point, pixelWidth ? : number, pixelHeight ? : number, current ? : boolean) : Rect;
+        viewportToImageRectangle(viewportX : number, viewportY : number, pixelWidth ? : number, pixelHeight ? : number, current ? : boolean) : Rect;
+        viewportToImageZoom(viewportZoom : number) : number;
+        windowToImageCoordinates(pixel : Point) : Point;
     }
   
     export class Rect{
