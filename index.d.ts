@@ -312,10 +312,10 @@ declare module 'openseadragon'{
         axajHeaders?: object
     }
   
-    export interface TileSourceOptions{
+    export type TileSourceOptions = {
         url?: string,
         referenceStripThumbnailUrl?: string,
-        success?: Function,
+        success?: (event)=>void,
         width?: number,
         height?: number,
         tileSize? : number,
@@ -352,24 +352,156 @@ declare module 'openseadragon'{
             onBlur ? : EventHandler,
         })
 
-        addHandler(eventName : ButtonEventName, handler : EventHandler, userData ? : object);
-
-        addOnceHandler(eventName : ButtonEventName, handler : EventHandler, userData ? : object, times ? : number);
-
-        disable()
-
-        enable()
-
+        addHandler(eventName : ButtonEventName, handler : EventHandler, userData ? : object) : void;
+        addOnceHandler(eventName : ButtonEventName, handler : EventHandler, userData ? : object, times ? : number) : void;
+        disable() : void;
+        enable() : void;
         getHandler(eventName : ButtonEventName) : (source : ButtonEventName, ...args)=>void;
-
-        raiseEvent(eventName : ButtonEventName, eventArgs : object);
-
-        removeAllHandlers(eventName : ButtonEventName);
-
-        removeHandler(eventName : ButtonEventName, handler : EventHandler);
-
-        
+        raiseEvent(eventName : ButtonEventName, eventArgs : object) : void;
+        removeAllHandlers(eventName : ButtonEventName) : void;
+        removeHandler(eventName : ButtonEventName, handler : EventHandler) : void;
     }
+
+    export class ButtonGroup {
+        buttons : Button[];
+        element : Element;
+        tracker : MouseTracker;
+
+        constructor(options : {
+            buttons : Button[],
+            element ? : Element
+        })
+    }
+
+    export type TControlOptions = {
+        anchor ? : ControlAnchor,
+        attachToViewer ? : boolean,
+        autoFade ? : boolean
+    }
+    export class Control{
+        anchor : ControlAnchor;
+        autoFade : boolean;
+        container : Element;
+        element : Element;
+        wrapper : Element;
+
+        constructor(
+            element : Element,
+            options : TControlOptions,
+            container : Element
+        );
+
+        destroy() : void;
+        isVisible() : boolean;
+        setOpacity(opacity : number) : void;
+        setVisible(visible : boolean) : void;
+    }
+
+    export class ControlDock{
+        constructor();
+
+        addControl(element : Control,controlOptions : TControlOptions);
+        areControlsEnabled() : boolean;
+        clearControls() : ControlDock;
+        removeControl(element : Control) : ControlDock;
+        setControlsEnabled(enabled : boolean) : ControlDock;
+    }
+
+    export class DisplayRect extends Rect{
+        maxLevel : number;
+        minLevel : number;
+
+        constructor(x : number,
+            y : number,
+            width : number,
+            height : number,
+            minLevel : number,
+            maxLevel : number
+        );
+    }
+
+    export class Drawer{
+        canvas : HTMLCanvasElement | HTMLElement;
+        container : Element;
+        context: CanvasRenderingContext2D | null;
+        // element : Element; // Deprecated
+
+        constructor(options : {
+            viewer : Viewer,
+            viewport : Viewport,
+            element : Element,
+            debugGridColor ? : string
+        });
+
+        blendSketch(options : {
+            opacity : number,
+            scale ? : number,
+            translate ? : Point,
+            compositeOperation ? : string,
+            bounds ? : Rect
+        }) : void;
+        canRotate() : boolean;
+        clear() : void;
+        destroy() : void;
+        drawTile(
+            tile:  Tile,
+            drawingHandler : (context,tile,rendered)=>void, //TODO: determine handler parameter types
+            useSketch : boolean,
+            scale ? : number,
+            translate ? : Point
+        ) : void;
+        getCanvasSize(sketch : boolean) : Point;
+        getOpacity() : number;
+        setOpacity(opacity : number) : Drawer;
+        viewportToDrawerRectangle(rectangle : Rect) : Rect;
+    }
+
+    export class DziTileSource extends TileSource{
+        constructor(
+            width : number,
+            height : number,
+            tileSize : number,
+            tileOverlap : number,
+            tilesUrl : number,
+            fileFormat : number,
+            displayRects : number,
+            minLevel : number,
+            maxLevel : number
+        );
+        constructor(options:{
+            width : number,
+            height : number,
+            tileSize : number,
+            tileOverlap : number,
+            tilesUrl : number,
+            fileFormat : number,
+            displayRects : number,
+            minLevel : number,
+            maxLevel : number
+        });
+    }
+
+    export class IIIFTileSource extends TileSource{}
+
+    export class ImageTileSource extends TileSource{
+        constructor(options : {
+            url : string,
+            buildPyramid ? : boolean,
+            crossOriginPolicy ? : string | boolean,
+            ajaxWidthCredentials ? : string | boolean,
+            useCanvas ? : boolean
+        })
+    }
+
+    export class LegacyTileSource extends TileSource{
+        constructor(levels : {
+            url : string,
+            width : number,
+            height : number
+        }[])
+    }
+
+   
 
     export interface MouseTrackerOptions{
         element	: Element | string,
@@ -408,30 +540,30 @@ declare module 'openseadragon'{
 
         constructor(options : MouseTrackerOptions)
 
-        blurHandler(event : OSDEvent);
-        clickHandler(event : OSDEvent);
-        dblClickHandler(event : OSDEvent);
-        destroy();
-        dragEndHandler(event : OSDEvent);
-        dragHandler(event : OSDEvent);
-        enterHandler(event : OSDEvent);
-        exitHandler(event : OSDEvent);
-        focusHandler(event : OSDEvent);
+        blurHandler : (event : OSDEvent) => void;
+        clickHandler : (event : OSDEvent) => void;
+        dblClickHandler : (event : OSDEvent) => void;
+        destroy() : void;
+        dragEndHandler : (event : OSDEvent) => void;
+        dragHandler : (event : OSDEvent) => void;
+        enterHandler : (event : OSDEvent) => void;
+        exitHandler : (event : OSDEvent) => void;
+        focusHandler : (event : OSDEvent) => void;
         getActivePointerCount() : number;
         getActivePointersListByType(type : string) : GesturePointList;
         getActivePointersListsExceptType(type : string) : GesturePointList[];
-        keyDownHandler(event : OSDEvent);
-        keyHandler(event : OSDEvent);
-        keyUpHandler(event : OSDEvent);
-        moveHandler(event : OSDEvent);
-        nonPrimaryPressHandler(event : OSDEvent);
-        nonPrimaryReleaseHandler(event : OSDEvent);
-        pinchHandler(event : OSDEvent);
-        pressHandler(event : OSDEvent);
-        releaseHandler(event : OSDEvent);
-        scrollHandler(event : OSDEvent);
+        keyDownHandler : (event : OSDEvent) => void;
+        keyHandler : (event : OSDEvent) => void;
+        keyUpHandler : (event : OSDEvent) => void;
+        moveHandler : (event : OSDEvent) => void;
+        nonPrimaryPressHandler : (event : OSDEvent) => void;
+        nonPrimaryReleaseHandler : (event : OSDEvent) => void;
+        pinchHandler : (event : OSDEvent) => void;
+        pressHandler : (event : OSDEvent) => void;
+        releaseHandler : (event : OSDEvent) => void;
+        scrollHandler : (event : OSDEvent) => void;
         setTracking(track : boolean) : MouseTracker;
-        stopHandler(event : OSDEvent);
+        stopHandler : (event : OSDEvent) => void;
     }
 
     export type GesturePoint = {
@@ -452,47 +584,376 @@ declare module 'openseadragon'{
     }
 
     class GesturePointList{
-        // TODO
-    }
-
-    class ButtonGroup {
         buttons : Button[];
-        element : Element;
-        tracker : MouseTracker;
+        captureCount : number;
+        clicks : number;
+        contacts : number;
+        type : string;
 
-        constructor(options : {
-            buttons : Button[],
-            element ? : Element
-        })
+        constructor(type : string);
+
+        add(gesturePoint : GesturePoint) : number;
+        addContact() : void;
+        asArray() : GesturePoint[];
+        getById(id : number) : GesturePoint | null;
+        getByIndex(index : number) : GesturePoint | null;
+        getLength() : number;
+        getPrimary() : GesturePoint | null;
+        removeById(id : number) : number;
+        removeContact() : void;
     }
 
-    class Control{
-        anchor : ControlAnchor;
-        autoFade : boolean;
-        container : Element;
-        element : Element;
-        wrapper : Element;
-        constructor(
-            element : Element,
-            options : {
-                anchor ? : ControlAnchor,
-                attachToViewer ? : boolean,
-                autoFade ? : boolean
-            },
-            container : Element
-        );
+    export class Navigator extends Viewer{
+        setFlip(state : boolean) : void;
+        update(viewport : Viewport) : void;
+        updateSize() : void;
+    }
 
-        destroy();
-        isVisible() : boolean;
-        setOpacity(opacity : number);
-        setVisible(visible : boolean);
+    export class OsmTileSource extends TileSource{
+        constructor(
+            width : number,
+            height : number,
+            tileSize : number,
+            tileOverlap : number,
+            tilesUrl : string
+        )
+    }
+
+    type OnDrawCallback = (position : Point, size : Point, element : HTMLElement) => void;
+
+    export type OverlayOptions = {
+        element : HTMLElement,
+        location : Point | Rect,
+        placement ? : Placement,
+        onDraw ? : OnDrawCallback,
+        checkResize ? : boolean,
+        width ? : number,
+        height ? : number,
+        rotationMode ? : boolean
+    }
+
+    export class Overlay{
+        constructor(options : OverlayOptions);
+        adjust(position : Point, size : Point) : void;
+        destroy() : void;
+        drawHTML(container : HTMLElement) : void;
+        getBounds(viewport : Viewport) : Rect;
+        update(location : Point | Rect, placement : Placement);
+    }
+
+    export class Point{
+        x : number;
+        y : number;
+        constructor(
+            x ?: number,
+            y ?: number
+        );
+        apply(func : (v : number)=>number) : Point;
+        clone() : Point;
+        distanceTo(point : Point) : number;
+        divide(factor : number) : number;
+        equals(point : Point) : boolean;
+        minus(point : Point) : Point;
+        negate() : Point;
+        plus(point : Point) : Point;
+        rotate(degrees : number, pivot? : Point) : Point;
+        squaredDistanceTo(point : Point) : number;
+        times(factor: number) : Rect;
+        toString() : string;
+    }
+
+    export class Rect{
+        x : number;
+        y : number;
+        width : number;
+        height : number;
+        constructor(x ?: number, y ?: number, width ?: number, height ?: number);
+        clone() : Rect;
+        containsPoint(point : Point, epsilon? : number) : boolean;
+        equals(rectangle : Rect) : boolean;
+        getAspectRatio() : number;
+        getBottomLeft() : Point;
+        getBottomRight() : Point;
+        getBoundingBox() : Rect;
+        getCenter() : Point;
+        getIntegerBoundingBox() : Rect;
+        getSize() : Point;
+        getTopLeft() : Point;
+        getTopRight() : Point;
+        intersection(rect : Rect) : Rect;
+        rotate(degrees : number,pivot?:Rect) : Rect;
+        times(factor: number) : Rect;
+        toString() : string;
+        translate(delta:Point) : Rect;
+        union(rect : Rect) : Rect;
+    }
+
+    export class ReferenceStrip{
+        constructor(options : object);
+        setFocus() : void;
+        update() : void;
+    }
+
+    export class Spring{
+        animationTime : number;
+        current : {
+            value : number,
+            time : number
+        };
+        springStiffness : number;
+        start : {
+            value : number,
+            time : number
+        }
+        constructor(options : {
+            springStiffness : number,
+            animationTime : number,
+            initial ?: number,
+            exponential ?: boolean
+        });
+        isAtTargetValue() : boolean;
+        resetTo(target : number) : void;
+        shiftBy(delta : number) : void;
+        springTo(target : number) : void;
+        update() : void;
+    }
+
+    export class Tile{
+        ajaxHeaders : object;
+        beingDrawn : boolean;
+        blendStart : number;
+        bounds : Rect;
+        cacheKey : string;
+        context2D : CanvasRenderingContext2D;
+        element : Element;
+        exists : boolean;
+        image : object;
+        imgElement : HTMLImageElement;
+        isBottomMost : boolean;
+        isRightMost : boolean;
+        lastTouchTime : number;
+        level : number;
+        loaded : boolean;
+        loading : boolean;
+        loadWithAjax : boolean;
+        opacity : number;
+        position : Point;
+        size : Point;
+        sourceBounds : Rect;
+        style : string;
+        url : string;
+        visibility : number;
+        x : number;
+        y : number;
+
+        constructor(
+            level : number,
+            x : number,
+            y : number,
+            bounds : Rect,
+            exists : boolean,
+            url : string,
+            context2D : CanvasRenderingContext2D,
+            loadWithAjax : boolean,
+            ajaxHeaders : object,
+            sourceBounds : Rect
+        );
+        drawCanvas(context : CanvasRenderingContext2D, drawingHandler : (context,tile,rendered)=>void, scale ?: number, translate ?: Point) : void;
+        drawHTML(container : Element) : void;
+        getScaleForEdgeSmoothing() : number;
+        getTranslationForEdgeSmoothing(scale ?: number) : Point;
+        toString() : string;
+        unload() : void;
+    }
+
+    export class TileCache{
+        constructor(options : {
+            maxImageCacheCount ?: number
+        });
+        cacheTile(options : {
+            tile : Tile,
+            image : HTMLImageElement, //TODO: check type
+            tiledImage : TiledImage,
+            cutoff ?: number;
+        });
+        clearTilesFor(tiledImage : TiledImage) : void;
+        numTilesLoaded() : number;
+    }
+
+    export class TiledImage{
+        source : TileSource;
+        constructor(options : {
+            source : TileSource,
+            viewer : Viewer,
+            tileCache :	TileCache,
+            drawer : Drawer,
+            imageLoader	: ImageLoader,
+            x ? : number,
+            y ? : number,
+            width ? : number,
+            height ? : number,
+            fitBounds ? : Rect,
+            fitBoundsPlacement ? : Placement,
+            clip ? : Rect,
+            springStiffness	? : number,
+            animationTime ? : boolean,
+            minZoomImageRatio ? : number,
+            wrapHorizontal ? : boolean,
+            wrapVertical ? : boolean,
+            immediateRender ? : boolean,
+            blendTime ? : number,
+            alwaysBlend ? : boolean,
+            minPixelRatio ? : number,
+            smoothTileEdgesMinZoom ? : number,
+            iOSDevice ? : boolean,
+            opacity ? : number,
+            preload ? : boolean,
+            compositeOperation ? : string,
+            debugMode ? : boolean,
+            placeholderFillStyle ? : string | CanvasGradient | CanvasPattern | Function,
+            crossOriginPolicy ? : string | boolean,
+            ajaxWithCredentials ? : boolean,
+            loadTilesWithAjax ? : boolean,
+            ajaxHeaders	? : object;
+        });
+
+        addHandler(eventName : string, handler : EventHandler, userData ? : object) : void;
+        addOnceHandler(eventName : string, handler : EventHandler, userData ? : object) : void;
+        destroy() : void;
+        draw() : void;
+        fitBounds(bounds : Rect, anchor ? : Placement, immediately ? : boolean) : void;
+        getBounds(current ? : boolean) : Rect;
+        getBoundsNoRotate(current ? : boolean) : Rect;
+        getClip() : Rect | null;
+        getClippedBounds(current ? : boolean) : Rect;
+        getCompositeOperation() : string;
+        getContentSize() : Point;
+        getFullyLoaded() : boolean;
+        getHandler(eventName : string) : (source, ...args)=>void;
+        getOpacity() : number;
+        getPreload() : boolean;
+        getRotation(current ? : boolean) : number;
+        imageToViewerElementCoordinats(pixel : Point) : Point;
+        imageToViewportCoordinates(position : Point, current ? : boolean) : Point;
+        imageToViewportCoordinates(imageX : number, imageY : number, current ? : boolean) : Point;
+        imageToViewportRectangle(position : Rect, pixelWidth ? : number, pixelHeight ? : number, current ? : boolean) : Rect;
+        imageToViewportRectangle(imageX : number, imageY : number, pixelWidth ? : number, pixelHeight ? : number, current ? : boolean) : Rect;
+        imageToViewportZoom(imageZoom : number) : number;
+        imageToWindowCoordinates(pixel : Point) : Point;
+        needsDraw() : boolean;
+        raiseEvent(eventName : string, eventArgs : object);
+        removeAllHandlers(eventName : string) : void;
+        removeHandler(eventName : string, handler : EventHandler) : void;
+        reset() : void;
+        setClip(newClip : Rect | null) : void;
+        setCompositeOperation(compositeOperation : string) : void;
+        setHeight(height : number, immediately ? : boolean) : void;
+        setOpacity(opacity : number) : void;
+        setPosition(position : Point, immediately ? : boolean) : void;
+        setPreload(preload : boolean) : void;
+        setRotation(degrees : number, immediately ? : boolean) : void;
+        setWidth(width : number, immediately ? : boolean) : void;
+        update() : boolean;
+        viewerElementToImageCoordinates(pixel : Point) : Point;
+        viewportToImageCoordinates(position : Point, current ? : boolean) : Point;
+        viewportToImageCoordinates(viewerX : number, viewerY : number, current ? : boolean) : Point;
+        viewportToImageRectangle(position : Point, pixelWidth ? : number, pixelHeight ? : number, current ? : boolean) : Rect;
+        viewportToImageRectangle(viewportX : number, viewportY : number, pixelWidth ? : number, pixelHeight ? : number, current ? : boolean) : Rect;
+        viewportToImageZoom(viewportZoom : number) : number;
+        windowToImageCoordinates(pixel : Point) : Point;
+    }
+
+    export class TileSource extends EventSource{
+        aspectRatio : number;
+        dimensions : Point;
+        maxLevel : number;
+        minlevel : number;
+        ready : boolean;
+        tileOverlap : number;
+        constructor(options : TileSourceOptions);
+        addHandler(eventName : string, handler : EventHandler, userData ?: object) : void;
+        addOnceHandler(eventName : string, handler : EventHandler, userData ?: object, times ?: number) : void;
+        configure(data : string | object | any[] | Document) : object;
+        getClosestLevel() : number;
+        getHandler(eventName : string) : (event)=>void;
+        getImageInfo(url : string) : void;
+        getLevelScale(level : number) : number;
+        getNumTiles(level : number) : number;
+        getPixelRatio(level : number) : number;
+        getTileAjaxHeaders(level : number, x: number, y: number):object;
+        getTileAtPoint(level : number, point : Point) : Tile;
+        getTileBounds(level : number, x : number, y : number, isSource ?: boolean) : Rect;
+        getTileHeight(level : number) : number;
+        getTileUrl(level : number, x : number, y : number) : string;
+        getTileWidth(level : number) : number;
+        raiseEvent(eventName : string, eventArgs : object) : void;
+        removeAllHandlers(eventName : string) : void;
+        removeHandler(eventName : string, handler : (event)=>void);
+        supports(data : string | object | any[] | Document, url : string) : boolean;
+        tileExists(level : number, x : number, y : number) : boolean;
+    }
+
+    export class TmsTileSource extends TileSource{
+        constructor(
+            width : number,
+            height : number,
+            tileSize : number,
+            tileOverlap : number,
+            tilesUrl : string
+        );
+    }
+
+    type TiledImageOptions = {
+        tileSource : string | object | Function,
+        index ?: number,
+        replace ?: boolean,
+        x ?: number,
+        y ?: number,
+        width ?: number,
+        height ?: number,
+        fitBounds ?: Rect,
+        fitBoundsPlacement ?: Placement,
+        clip ?: Rect,
+        opacity ?: number,
+        preload ?: boolean,
+        degrees ?: number,
+        compositeOperation ?: string,
+        crossOriginPolicy ?: string,
+        ajaxWithCredentials ?: boolean,
+        loadTilesWithAjax ?: boolean,
+        ajaxHeaders ?: object,
+        success ?: (event)=>void,
+        error ?: (error)=>void,
+        collectionImmediately ?: boolean,
+        placeholderFillStyle ?: string | CanvasGradient | CanvasPattern | Function
+    }
+
+    export class Viewer extends ControlDock{
+        canvas : HTMLElement;
+        container : HTMLElement;
+        drawer : Drawer;
+        element : HTMLElement;
+        initialPage : number;
+        navigator: Navigator;
+        viewport : Viewport;
+        world : World | Drawer; //TODO: check (documentation says it return a Drawer, but World makes sense too)
+        
+        constructor(options : Options)
+        _cancelPendingImages() : void;
+        addHandler(eventName : ViewerEventName,callback:(event)=>any,userData? : object) : void;
+        addOnceHandler(eventName : ViewerEventName,callback:(event)=>any,userData? : object, times?:number) : void;
+        addOverlay(element : HTMLElement | string | object, location ? : Point | Rect, placement ? : Placement, onDraw ? : Function) : Viewer;
+        addReferenceStrip() : void;
+        addSimpleImage(options :TiledImageOptions) : void; //TODO: check options type
+        addTiledImage(options : TiledImageOptions) : void;
+        
+        setFullPage(fullScreen : boolean) : Viewer;
+        setFullScreen(fullScreen : boolean) : Viewer;
     }
 
     type EventHandler = (event : OSDEvent) => void;
 
-    export class TileSource implements TileSourceOptions{
-        constructor(options : TileSourceOptions)
-    }
+    
     
     export type ButtonEventName = "blur" | "click" | "enter" | "exit" | "focus" | "press" | "release";
     export type TiledImageEventName = "bounds-change" | "clip-change" | "composite-operation-change" | "fully-loaded-change" | "opacity-change"
@@ -500,39 +961,7 @@ declare module 'openseadragon'{
     export type ViewerEventName = "add-item-failed" | "add-overlay" | "animation" | "animation-finish" | "animation-start" | "canvas-click" | "canvas-double-click" | "canvas-drag" | "canvas-drag-end" | "canvas-enter" | "canvas-exit" | "canvas-key" | "canvas-nonprimary-press" | "canvas-nonprimary-release" | "canvas-pinch" | "canvas-press" | "canvas-release" | "canvas-scroll" | "clear-overlay" | "close" | "constrain" | "container-enter" | "container-exit" | "controls-enabled" | "flip" | "full-page" | "full-screen" | "home" | "mouse-enabled" | "navigator-click" | "navigator-drag" | "navigator-scroll" | "open" | "open-failed" | "page" | "pan" | "pre-full-page" | "pre-full-screen" | "remove-overlay" | "reset-size" | "resize" | "rotate" | "tile-drawing" | "tile-drawn" | "tile-load-failed" | "tile-loaded" | "tile-unloaded" | "update-level" | "update-overlay" | "update-tile" | "update-viewport" | "viewport-change" | "visible" | "zoom";
     export type WorldEventName = "add-item" | "item-index-change" | "metrics-change" | "remove-item";
   
-    export class Viewer{
-        canvas : HTMLElement;
-        container : HTMLElement;
-        drawer : Drawer;
-        element : Element;
-        initialPage : number;
-        navigator: Navigator;
-        viewport : Viewport;
-        world : World;
-        
-        constructor(options : Options)
-        addHandler(eventName : ViewerEventName,callback:(event)=>any,userData? : object);
-        addOnceHandler(eventName : ViewerEventName,callback:(event)=>any,userData? : object, times?:number);
-        addOverlay(element : HTMLElement | string | object, location ? : Point | Rect, placement ? : Placement, onDraw ? : Function) : Viewer;
-        addReferenceStrip();
-        addSimpleImage(options : {url? : string});
-        
-        setFullPage(fullScreen : boolean) : Viewer;
-        setFullScreen(fullScreen : boolean) : Viewer;
-    }
-  
     
-  
-    export class Navigator{
-        canvas : HTMLCanvasElement;
-        container : HTMLElement;
-        drawer : Drawer;
-        element : HTMLElement;
-        initialPage : number;
-        // navigator : Navigator; // ?
-        viewport : Viewport;
-        world : World;
-    }
   
     export class Viewport{
         constructor(options : {
@@ -620,174 +1049,19 @@ declare module 'openseadragon'{
         getItemCount() : number;
         addHandler(eventName : WorldEventName, callback : Function);
     }
-  
-    export class Drawer{
-        context: CanvasRenderingContext2D;
-        viewportToDrawerRectangle(rect : Rect) : Rect;
-    }
 
-    export class TileCache{
-
-    }
+    
 
     export class ImageLoader{
 
     }
   
-    export class TiledImage{
-        constructor(options : {
-            source : TileSource,
-            viewer : Viewer,
-            tileCache :	TileCache,
-            drawer : Drawer,
-            imageLoader	: ImageLoader,
-            x ? : number,
-            y ? : number,
-            width ? : number,
-            height ? : number,
-            fitBounds ? : Rect,
-            fitBoundsPlacement ? : Placement,
-            clip ? : Rect,
-            springStiffness	? : number,
-            animationTime ? : boolean,
-            minZoomImageRatio ? : number,
-            wrapHorizontal ? : boolean,
-            wrapVertical ? : boolean,
-            immediateRender ? : boolean,
-            blendTime ? : number,
-            alwaysBlend ? : boolean,
-            minPixelRatio ? : number,
-            smoothTileEdgesMinZoom ? : number,
-            iOSDevice ? : boolean,
-            opacity ? : number,
-            preload ? : boolean,
-            compositeOperation ? : string,
-            debugMode ? : boolean,
-            placeholderFillStyle ? : string | CanvasGradient | CanvasPattern | Function,
-            crossOriginPolicy ? : string | boolean,
-            ajaxWithCredentials ? : boolean,
-            loadTilesWithAjax ? : boolean,
-            ajaxHeaders	? : object;
-        });
-
-        source : TileSource;
-
-        addHandler(eventName : string, handler : EventHandler, userData ? : object) : void;
-        addOnceHandler(eventName : string, handler : EventHandler, userData ? : object) : void;
-        destroy() : void;
-        draw() : void;
-        fitBounds(bounds : Rect, anchor ? : Placement, immediately ? : boolean) : void;
-        getBounds(current ? : boolean) : Rect;
-        getBoundsNoRotate(current ? : boolean) : Rect;
-        getClip() : Rect | null;
-        getClippedBounds(current ? : boolean) : Rect;
-        getCompositeOperation() : string;
-        getContentSize() : Point;
-        getFullyLoaded() : boolean;
-        getHandler(eventName : string) : void; //TODO: check return value
-        getOpacity() : number;
-        getPreload() : boolean;
-        getRotation(current ? : boolean) : number;
-        imageToViewerElementCoordinats(pixel : Point) : Point;
-        imageToViewportCoordinates(position : Point, current ? : boolean) : Point;
-        imageToViewportCoordinates(imageX : number, imageY : number, current ? : boolean) : Point;
-        imageToViewportRectangle(position : Rect, pixelWidth ? : number, pixelHeight ? : number, current ? : boolean) : Rect;
-        imageToViewportRectangle(imageX : number, imageY : number, pixelWidth ? : number, pixelHeight ? : number, current ? : boolean) : Rect;
-        imageToViewportZoom(imageZoom : number) : number;
-        imageToWindowCoordinates(pixel : Point) : Point;
-        needsDraw() : boolean;
-        raiseEvent(eventName : string, eventArgs : object);
-        removeAllHandlers(eventName : string) : void;
-        removeHandler(eventName : string, handler : EventHandler) : void;
-        reset() : void;
-        setClip(newClip : Rect | null) : void;
-        setCompositeOperation(compositeOperation : string) : void;
-        setHeight(height : number, immediately ? : boolean) : void;
-        setOpacity(opacity : number) : void;
-        setPosition(position : Point, immediately ? : boolean) : void;
-        setPreload(preload : boolean) : void;
-        setRotation(degrees : number, immediately ? : boolean) : void;
-        setWidth(width : number, immediately ? : boolean) : void;
-        update() : boolean;
-        viewerElementToImageCoordinates(pixel : Point) : Point;
-        viewportToImageCoordinates(position : Point, current ? : boolean) : Point;
-        viewportToImageCoordinates(viewerX : number, viewerY : number, current ? : boolean) : Point;
-        viewportToImageRectangle(position : Point, pixelWidth ? : number, pixelHeight ? : number, current ? : boolean) : Rect;
-        viewportToImageRectangle(viewportX : number, viewportY : number, pixelWidth ? : number, pixelHeight ? : number, current ? : boolean) : Rect;
-        viewportToImageZoom(viewportZoom : number) : number;
-        windowToImageCoordinates(pixel : Point) : Point;
-    }
-  
-    export class Rect{
-        x : number;
-        y : number;
-        width : number;
-        height : number;
-        constructor(x : number, y : number, width : number, height : number);
-        clone() : Rect;
-        containsPoint(point : Point, epsilon? : number) : boolean;
-        getAspectRatio() : number;
-        getBottomLeft() : Point;
-        getBottomRight() : Point;
-        getBoundingBox() : Rect;
-        getCenter() : Point;
-        getIntegerBoundingBox() : Rect;
-        getSize() : Point;
-        getTopLeft() : Point;
-        getTopRight() : Point;
-        intersection(rect : Rect) : Rect;
-        rotate(degrees : number,pivot?:Rect) : Rect;
-        times(factor: number) : Rect;
-        toString() : string;
-        translate(delta:Point) : Rect;
-        union(rect : Rect) : Rect;
-    }
-  
-    export class Point{
-        x : number;
-        y : number;
-        constructor(x:number,y:number);
-        apply(func : Function) : Point;
-        clone() : Point;
-        distanceTo(point : Point) : number;
-        divide(factor : number) : number;
-        equals(point : Point) : boolean;
-        minus(point : Point) : Point;
-        negate(point : Point) : Point;
-        plus(point : Point) : Point;
-        rotate(degrees : number, pivot? : Point) : Point;
-        squaredDistanceTo(point : Point) : number;
-        times(factor: number) : Rect;
-        toString() : string;
-    }
+    
   
     interface OSDEvent extends Event{
         originalEvent : object,
         position ? : Point,
         clientX ? : number,
         clientY ? : number
-    }
-
-
-    export type OnDrawCallback = (position : Point, size : Point, element : HTMLElement) => void;
-
-    export interface OverlayOptions{
-        element : HTMLElement,
-        location : Point | Rect,
-        placement ? : Placement,
-        onDraw ? : OnDrawCallback,
-        checkResize ? : boolean,
-        width ? : number,
-        height ? : number,
-        rotationMode ? : boolean
-    }
-
-    export class Overlay{
-        constructor(options : OverlayOptions);
-        adjust(position : Point, size : Point) : void;
-        destroy() : void;
-        drawHTML(container : HTMLElement) : void;
-        getBounds(viewport : Viewport) : Rect;
-        update(location : Point | Rect, placement : Placement);
     }
   }
