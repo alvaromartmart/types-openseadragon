@@ -85,19 +85,19 @@ declare module 'openseadragon'{
         revision : number
     }
 
-    export function addClass(element : Element | string, className : string);
+    export function addClass(element : Element | string, className : string) : void;
 
-    export function addEvent(element : Element | string, eventName : string, handler : Function, useCapture ? : boolean);
+    export function addEvent(element : Element | string, eventName : string, handler : Function, useCapture ? : boolean) : void;
 
-    export function cancelEvent(event ? : OSDEvent);
+    export function cancelEvent(event ? : OSDEvent) : void;
 
     export function capitalizeFirstLetter(value : string) : string;
 
-    export function createCallback(object : Object, method : Function, ...args);
+    export function createCallback(object : Object, method : Function, ...args) : (...args)=>void;
 
-    export function delegate(object : Object, method : Function) : Function;
+    export function delegate(object : Object, method : Function) : Function; // REVIEW: unsure of return type
 
-    export function extend();
+    export function extend() : any;
 
     export function getCssPropertyWithVendorPrefix(property : string) : string;
 
@@ -123,7 +123,7 @@ declare module 'openseadragon'{
 
     export function imageFormatSupported(extension ? : string) : boolean;
 
-    export function indexOf(array : any[], searchElement : object, fromIndex ? : number);
+    export function indexOf(array : any[], searchElement : object, fromIndex ? : number) : number;
 
     // (missing jquery functions)
 
@@ -482,6 +482,24 @@ declare module 'openseadragon'{
     }
 
     export class IIIFTileSource extends TileSource{}
+
+    export class ImageLoader{
+        constructor(options : {
+            jobLimit ?: number,
+            timeout ?: number
+        });
+
+        addJob(options : {
+            src ?: string,
+            loadWithAjax ?: string,
+            ajaxHeaders ?: string,
+            crossOriginPolicy ?: string | boolean,
+            ajaxWithCredentials ?: boolean,
+            callback ?: ()=>void,
+            abort ?: ()=>void
+        });
+        clear() : void;
+    }
 
     export class ImageTileSource extends TileSource{
         constructor(options : {
@@ -1095,6 +1113,8 @@ declare module 'openseadragon'{
         constructor(width : number, height : number, tileSize : number, tilesUrl : string)
     }
 
+    // TODO: use proper eventName type aliases, and OSDEvent where appropiate
+
     type EventHandler = (event : OSDEvent) => void;
     
     export type ButtonEventName = "blur" | "click" | "enter" | "exit" | "focus" | "press" | "release";
@@ -1102,19 +1122,7 @@ declare module 'openseadragon'{
     export type TileSourceEventname = "open-failed" | "ready";
     export type ViewerEventName = "add-item-failed" | "add-overlay" | "animation" | "animation-finish" | "animation-start" | "canvas-click" | "canvas-double-click" | "canvas-drag" | "canvas-drag-end" | "canvas-enter" | "canvas-exit" | "canvas-key" | "canvas-nonprimary-press" | "canvas-nonprimary-release" | "canvas-pinch" | "canvas-press" | "canvas-release" | "canvas-scroll" | "clear-overlay" | "close" | "constrain" | "container-enter" | "container-exit" | "controls-enabled" | "flip" | "full-page" | "full-screen" | "home" | "mouse-enabled" | "navigator-click" | "navigator-drag" | "navigator-scroll" | "open" | "open-failed" | "page" | "pan" | "pre-full-page" | "pre-full-screen" | "remove-overlay" | "reset-size" | "resize" | "rotate" | "tile-drawing" | "tile-drawn" | "tile-load-failed" | "tile-loaded" | "tile-unloaded" | "update-level" | "update-overlay" | "update-tile" | "update-viewport" | "viewport-change" | "visible" | "zoom";
     export type WorldEventName = "add-item" | "item-index-change" | "metrics-change" | "remove-item";
-  
-    
-  
-    
 
-    
-
-    export class ImageLoader{
-
-    }
-  
-    
-  
     interface OSDEvent extends Event{
         originalEvent : object,
         position ? : Point,
