@@ -936,7 +936,7 @@ declare module 'openseadragon'{
         initialPage : number;
         navigator: Navigator;
         viewport : Viewport;
-        world : World | Drawer; //TODO: check (documentation says it return a Drawer, but World makes sense too)
+        world : World;
         
         constructor(options : Options)
         _cancelPendingImages() : void;
