@@ -946,23 +946,36 @@ declare module 'openseadragon'{
         addReferenceStrip() : void;
         addSimpleImage(options :TiledImageOptions) : void; //TODO: check options type
         addTiledImage(options : TiledImageOptions) : void;
-        
+        bindSequenceControls() : Viewer;
+        bindStandardControls() : Viewer;
+        clearOverlays() : Viewer;
+        close() : Viewer;
+        currentPage() : number;
+        destroy() : void;
+        forceRedraw() : Viewer;
+        gestureSettingsByDeviceType(type : string) : GestureSettings;
+        getHandler(eventName : string) : (event)=>void;
+        getOverlayById(element : Element | string) : Overlay;
+        goToPage(page : number) : Viewer;
+        isFullPage() : boolean;
+        isMouseNavEnabled() : boolean;
+        isOpen() : boolean;
+        isVisible() : boolean;
+        open(tileSources : string | object | TileSource[],initialPage ?: number) : Viewer;
+        raiseEvent(eventName : string, eventArgs ?: object) : void;
+        removeAllHandlers(eventName : string) : void;
+        removeHandler(eventName : string, handler : (event)=>void) : void;
+        removeOverlay(overlay : Element | string) : Viewer;
+        removeReferenceStrip() : void;
+        setControlsEnabled(enabled : boolean) : Viewer;
+        setDebugMode(debug : boolean) : Viewer;
         setFullPage(fullScreen : boolean) : Viewer;
         setFullScreen(fullScreen : boolean) : Viewer;
+        setMouseNavEnabled(enabled : boolean) : Viewer;
+        setVisible(visible : boolean) : Viewer;
+        updateOverlay(element : Element | string, location : Point | Rect, placement : Placement) : Viewer;
     }
 
-    type EventHandler = (event : OSDEvent) => void;
-
-    
-    
-    export type ButtonEventName = "blur" | "click" | "enter" | "exit" | "focus" | "press" | "release";
-    export type TiledImageEventName = "bounds-change" | "clip-change" | "composite-operation-change" | "fully-loaded-change" | "opacity-change"
-    export type TileSourceEventname = "open-failed" | "ready";
-    export type ViewerEventName = "add-item-failed" | "add-overlay" | "animation" | "animation-finish" | "animation-start" | "canvas-click" | "canvas-double-click" | "canvas-drag" | "canvas-drag-end" | "canvas-enter" | "canvas-exit" | "canvas-key" | "canvas-nonprimary-press" | "canvas-nonprimary-release" | "canvas-pinch" | "canvas-press" | "canvas-release" | "canvas-scroll" | "clear-overlay" | "close" | "constrain" | "container-enter" | "container-exit" | "controls-enabled" | "flip" | "full-page" | "full-screen" | "home" | "mouse-enabled" | "navigator-click" | "navigator-drag" | "navigator-scroll" | "open" | "open-failed" | "page" | "pan" | "pre-full-page" | "pre-full-screen" | "remove-overlay" | "reset-size" | "resize" | "rotate" | "tile-drawing" | "tile-drawn" | "tile-load-failed" | "tile-loaded" | "tile-unloaded" | "update-level" | "update-overlay" | "update-tile" | "update-viewport" | "viewport-change" | "visible" | "zoom";
-    export type WorldEventName = "add-item" | "item-index-change" | "metrics-change" | "remove-item";
-  
-    
-  
     export class Viewport{
         constructor(options : {
             margins	: object,
@@ -995,7 +1008,7 @@ declare module 'openseadragon'{
         getBoundsNoRotate(current ? : boolean) : Rect;
         getBoundsNoRotateWithMargins(current ? : boolean) : Rect;
         getBoundsWithMargins(current ? : boolean) : Rect;
-        getCenter(current ? : boolean) : Point; //TODO: check return type
+        getCenter(current ? : boolean) : Point;
         getConstrainedBounds(current ? : boolean) : Viewport;
         getContainerSize() : Point;
         getFlip() : boolean;
@@ -1023,7 +1036,7 @@ declare module 'openseadragon'{
         resetContentSize(contentSize : Point) : Viewport;
         resize() : Viewport;
         setFlip(state : boolean) : Viewport;
-        setMargins(margins : object) : void; //TODO: determine return type
+        setMargins(margins : object) : void;
         setRotation() : Viewport;
         toggleFlip() : Viewport;
         update() : boolean;
@@ -1044,11 +1057,55 @@ declare module 'openseadragon'{
         zoomTo(factor : number, refPoint ? : Point, immediately ? : boolean) : Viewport;
     }
   
-    export class World{
+    export class World extends EventSource{
+        
+        constructor(options : object);
+
+        addHandler(eventName : WorldEventName, callback : (event)=>void, userData ?: object) : void;
+        addItem(item : TiledImage, options ?: {index ?: number}) : void;
+        addOnceHandler(eventName : string, handler : EventHandler, userData ?: object, times ?: number) : void;
+        arrange(options : {
+            immediately ?: boolean,
+            layout ?: "horizontal" | "vertical",
+            rows ?: number,
+            columns ?: number,
+            tileSize ?: number,
+            tileMargin ?: number
+        }) : void;
+        draw() : void;
+        getContentFactor() : number;
+        getHandler(eventName : string) : (event)=>void;
+        getHomeBounds() : Rect;
+        getIndexOfItem(item : TiledImage) : number;
         getItemAt(id : number) : TiledImage;
         getItemCount() : number;
-        addHandler(eventName : WorldEventName, callback : Function);
+        needsDraw() : boolean;
+        raiseEvent(eventName : string, eventArgs ?: object) : void;
+        removeAll() : void;
+        removeAllHandlers(eventName : string) : void;
+        removeHandler(eventName: string, handler : (event)=>void) : void;
+        removeItem(item : TiledImage) : void;
+        resetItems() : void;
+        setAutoRefigureSizes(value ?: boolean) : void;
+        setItemIndex(item : TiledImage, index : number) : void;
+        update() : void;
     }
+
+    export class ZoomifyTileSource extends TileSource{
+        constructor(width : number, height : number, tileSize : number, tilesUrl : string)
+    }
+
+    type EventHandler = (event : OSDEvent) => void;
+    
+    export type ButtonEventName = "blur" | "click" | "enter" | "exit" | "focus" | "press" | "release";
+    export type TiledImageEventName = "bounds-change" | "clip-change" | "composite-operation-change" | "fully-loaded-change" | "opacity-change"
+    export type TileSourceEventname = "open-failed" | "ready";
+    export type ViewerEventName = "add-item-failed" | "add-overlay" | "animation" | "animation-finish" | "animation-start" | "canvas-click" | "canvas-double-click" | "canvas-drag" | "canvas-drag-end" | "canvas-enter" | "canvas-exit" | "canvas-key" | "canvas-nonprimary-press" | "canvas-nonprimary-release" | "canvas-pinch" | "canvas-press" | "canvas-release" | "canvas-scroll" | "clear-overlay" | "close" | "constrain" | "container-enter" | "container-exit" | "controls-enabled" | "flip" | "full-page" | "full-screen" | "home" | "mouse-enabled" | "navigator-click" | "navigator-drag" | "navigator-scroll" | "open" | "open-failed" | "page" | "pan" | "pre-full-page" | "pre-full-screen" | "remove-overlay" | "reset-size" | "resize" | "rotate" | "tile-drawing" | "tile-drawn" | "tile-load-failed" | "tile-loaded" | "tile-unloaded" | "update-level" | "update-overlay" | "update-tile" | "update-viewport" | "viewport-change" | "visible" | "zoom";
+    export type WorldEventName = "add-item" | "item-index-change" | "metrics-change" | "remove-item";
+  
+    
+  
+    
 
     
 
