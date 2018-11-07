@@ -35,11 +35,11 @@ declare module 'openseadragon'{
 
     export const fullScreenApi : {
         supportsFullScreen : boolean;
-        isFullScreen : Function;
-        getFullScreenElement : Function;
-        requestFullScreen : Function;
-        exitFullScreen : Function;
-        cancelFullScreen : Function;
+        isFullScreen : ()=>boolean;
+        getFullScreenElement : ()=>HTMLElement;
+        requestFullScreen : ()=>void;
+        exitFullScreen : ()=>void;
+        cancelFullScreen : ()=>void;
         fullScreenEventName : string;
         fullScreenErrorEventName : string;
     }
@@ -87,15 +87,15 @@ declare module 'openseadragon'{
 
     export function addClass(element : Element | string, className : string) : void;
 
-    export function addEvent(element : Element | string, eventName : string, handler : Function, useCapture ? : boolean) : void;
+    export function addEvent(element : Element | string, eventName : string, handler : (event)=>void, useCapture ? : boolean) : void;
 
     export function cancelEvent(event ? : OSDEvent) : void;
 
     export function capitalizeFirstLetter(value : string) : string;
 
-    export function createCallback(object : Object, method : Function, ...args) : (...args)=>void;
+    export function createCallback(object : object, method : (...args)=>void, ...args) : (...args)=>void;
 
-    export function delegate(object : Object, method : Function) : Function; // REVIEW: unsure of return type
+    export function delegate(object : object, method : (...args)=>void) : (object, ...args)=>void; // REVIEW: unsure of return type
 
     export function extend() : any;
 
@@ -129,8 +129,8 @@ declare module 'openseadragon'{
 
     export function makeAjaxRequest(options : {
         url : string,
-        success : Function,
-        error : Function,
+        success : (obj : object)=>void,
+        error : (obj : object)=>void,
         headers : object,
         responseType : string,
         withCredentials ? : boolean
@@ -152,11 +152,11 @@ declare module 'openseadragon'{
 
     export function positiveModulo(number : number, modulo : number) : number;
 
-    export function removeClass(element : Element | string, className : string);
+    export function removeClass(element : Element | string, className : string):void;
 
-    export function removeEvent(element : Element | string, eventName : string, handler : Function, useCapture ? : boolean);
+    export function removeEvent(element : Element | string, eventName : string, handler : EventHandler, useCapture ? : boolean):void;
 
-    export function setElementOpacity(element : Element | string, opacity : number, usesAlpha ? : boolean);
+    export function setElementOpacity(element : Element | string, opacity : number, usesAlpha ? : boolean):void;
 
     export function setElementTouchActionNone(element : Element | string)
 
@@ -197,7 +197,7 @@ declare module 'openseadragon'{
     export interface Options{
         id? : string,
         element ? : HTMLElement,
-        tileSources ?: string | Function | TileSource[],
+        tileSources ?: string | TileSource[],
         tabIndex ? : number,
         overlays? : any[],
         prefixUrl? : string,
@@ -212,7 +212,7 @@ declare module 'openseadragon'{
         opacity?: number,
         preload?: boolean,
         compositeOperation?: 'source-over' | 'source-atop' | 'source-in' | 'source-out' | 'destination-over' | 'destination-atop' | 'destination-in' | 'destination-out' | 'lighter' | 'copy' | 'xor',
-        placeholderFillStyle?: string | CanvasGradient | CanvasPattern | Function,
+        placeholderFillStyle?: string | CanvasGradient | CanvasPattern,
         degrees?: number,
         flipped?: boolean,
         minZoomLevel?:       number,
@@ -398,9 +398,9 @@ declare module 'openseadragon'{
     }
 
     export class ControlDock{
-        constructor();
+        constructor(options : object);
 
-        addControl(element : Control,controlOptions : TControlOptions);
+        addControl(element : Control,controlOptions : TControlOptions):void;
         areControlsEnabled() : boolean;
         clearControls() : ControlDock;
         removeControl(element : Control) : ControlDock;
@@ -468,17 +468,6 @@ declare module 'openseadragon'{
             minLevel : number,
             maxLevel : number
         );
-        constructor(options:{
-            width : number,
-            height : number,
-            tileSize : number,
-            tileOverlap : number,
-            tilesUrl : number,
-            fileFormat : number,
-            displayRects : number,
-            minLevel : number,
-            maxLevel : number
-        });
     }
 
     export class IIIFTileSource extends TileSource{}
@@ -497,7 +486,7 @@ declare module 'openseadragon'{
             ajaxWithCredentials ?: boolean,
             callback ?: ()=>void,
             abort ?: ()=>void
-        });
+        }):void;
         clear() : void;
     }
 
@@ -656,7 +645,7 @@ declare module 'openseadragon'{
         destroy() : void;
         drawHTML(container : HTMLElement) : void;
         getBounds(viewport : Viewport) : Rect;
-        update(location : Point | Rect, placement : Placement);
+        update(location : Point | Rect, placement : Placement):void;
     }
 
     export class Point{
@@ -793,7 +782,7 @@ declare module 'openseadragon'{
             image : HTMLImageElement, //TODO: check type
             tiledImage : TiledImage,
             cutoff ?: number;
-        });
+        }):void;
         clearTilesFor(tiledImage : TiledImage) : void;
         numTilesLoaded() : number;
     }
@@ -828,7 +817,7 @@ declare module 'openseadragon'{
             preload ? : boolean,
             compositeOperation ? : string,
             debugMode ? : boolean,
-            placeholderFillStyle ? : string | CanvasGradient | CanvasPattern | Function,
+            placeholderFillStyle ? : string | CanvasGradient | CanvasPattern,
             crossOriginPolicy ? : string | boolean,
             ajaxWithCredentials ? : boolean,
             loadTilesWithAjax ? : boolean,
@@ -859,7 +848,7 @@ declare module 'openseadragon'{
         imageToViewportZoom(imageZoom : number) : number;
         imageToWindowCoordinates(pixel : Point) : Point;
         needsDraw() : boolean;
-        raiseEvent(eventName : string, eventArgs : object);
+        raiseEvent(eventName : string, eventArgs : object):void;
         removeAllHandlers(eventName : string) : void;
         removeHandler(eventName : string, handler : EventHandler) : void;
         reset() : void;
@@ -906,7 +895,7 @@ declare module 'openseadragon'{
         getTileWidth(level : number) : number;
         raiseEvent(eventName : string, eventArgs : object) : void;
         removeAllHandlers(eventName : string) : void;
-        removeHandler(eventName : string, handler : (event)=>void);
+        removeHandler(eventName : string, handler : (event)=>void):void;
         supports(data : string | object | any[] | Document, url : string) : boolean;
         tileExists(level : number, x : number, y : number) : boolean;
     }
@@ -922,7 +911,7 @@ declare module 'openseadragon'{
     }
 
     type TiledImageOptions = {
-        tileSource : string | object | Function,
+        tileSource : string | object,
         index ?: number,
         replace ?: boolean,
         x ?: number,
@@ -943,7 +932,7 @@ declare module 'openseadragon'{
         success ?: (event)=>void,
         error ?: (error)=>void,
         collectionImmediately ?: boolean,
-        placeholderFillStyle ?: string | CanvasGradient | CanvasPattern | Function
+        placeholderFillStyle ?: string | CanvasGradient | CanvasPattern
     }
 
     export class Viewer extends ControlDock{
@@ -961,7 +950,7 @@ declare module 'openseadragon'{
         _cancelPendingImages() : void;
         addHandler(eventName : ViewerEventName,callback:(event)=>any,userData? : object) : void;
         addOnceHandler(eventName : ViewerEventName,callback:(event)=>any,userData? : object, times?:number) : void;
-        addOverlay(element : HTMLElement | string | object, location ? : Point | Rect, placement ? : Placement, onDraw ? : Function) : Viewer;
+        addOverlay(element : HTMLElement | string | object, location ? : Point | Rect, placement ? : Placement, onDraw ? : (element : HTMLElement, location : Location, placement : Placement)=>void) : Viewer;
         addReferenceStrip() : void;
         addSimpleImage(options :TiledImageOptions) : void; //TODO: check options type
         addTiledImage(options : TiledImageOptions) : void;
@@ -1039,7 +1028,7 @@ declare module 'openseadragon'{
         getMinZoom() : number;
         getRotation() : number;
         getZoom(current ? : boolean) : number;
-        goHome(immediately ? : boolean);
+        goHome(immediately ? : boolean):void;
         imageToViewerElementCoordinates(pixel : Point) : Point;
         imageToViewportCoordinates(position : Point) : Point;
         imageToViewportCoordinates(imageX : number, imageY : number) : Point;
