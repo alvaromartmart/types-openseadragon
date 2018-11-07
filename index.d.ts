@@ -955,6 +955,7 @@ declare module 'openseadragon'{
         navigator: Navigator;
         viewport : Viewport;
         world : World;
+        referenceStrip : ReferenceStrip;
         
         constructor(options : Options)
         _cancelPendingImages() : void;
