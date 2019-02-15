@@ -658,7 +658,7 @@ declare module 'openseadragon'{
         apply(func : (v : number)=>number) : Point;
         clone() : Point;
         distanceTo(point : Point) : number;
-        divide(factor : number) : number;
+        divide(factor : number) : Point;
         equals(point : Point) : boolean;
         minus(point : Point) : Point;
         negate() : Point;
