@@ -843,8 +843,9 @@ declare module 'openseadragon'{
         imageToViewerElementCoordinats(pixel : Point) : Point;
         imageToViewportCoordinates(position : Point, current ? : boolean) : Point;
         imageToViewportCoordinates(imageX : number, imageY : number, current ? : boolean) : Point;
+        imageToViewportRectangle(imageX : number, imageY ?: number, pixelWidth ? : number, pixelHeight ? : number, current ? : boolean) : Rect;
         imageToViewportRectangle(position : Rect, pixelWidth ? : number, pixelHeight ? : number, current ? : boolean) : Rect;
-        imageToViewportRectangle(imageX : number, imageY : number, pixelWidth ? : number, pixelHeight ? : number, current ? : boolean) : Rect;
+        
         imageToViewportZoom(imageZoom : number) : number;
         imageToWindowCoordinates(pixel : Point) : Point;
         needsDraw() : boolean;
@@ -864,7 +865,7 @@ declare module 'openseadragon'{
         viewerElementToImageCoordinates(pixel : Point) : Point;
         viewportToImageCoordinates(position : Point, current ? : boolean) : Point;
         viewportToImageCoordinates(viewerX : number, viewerY : number, current ? : boolean) : Point;
-        viewportToImageRectangle(position : Point, pixelWidth ? : number, pixelHeight ? : number, current ? : boolean) : Rect;
+        viewportToImageRectangle(position : Rect) : Rect;
         viewportToImageRectangle(viewportX : number, viewportY : number, pixelWidth ? : number, pixelHeight ? : number, current ? : boolean) : Rect;
         viewportToImageZoom(viewportZoom : number) : number;
         windowToImageCoordinates(pixel : Point) : Point;
