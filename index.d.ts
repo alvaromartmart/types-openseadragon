@@ -1,5 +1,5 @@
 declare module 'openseadragon'{
-    
+
     export class Browser {
         vendor : BROWSERS;
         version : number;
@@ -23,11 +23,11 @@ declare module 'openseadragon'{
     }
 
     export enum ControlAnchor{
-        NONE,	
-        TOP_LEFT,	
-        TOP_RIGHT,	
-        BOTTOM_LEFT,	
-        BOTTOM_RIGHT,	
+        NONE,
+        TOP_LEFT,
+        TOP_RIGHT,
+        BOTTOM_LEFT,
+        BOTTOM_RIGHT,
         ABSOLUTE
     }
 
@@ -45,14 +45,14 @@ declare module 'openseadragon'{
     }
 
     export enum OverlayPlacement {
-        CENTER,	
-        TOP_LEFT,	
-        TOP,	
-        TOP_RIGHT,	
-        RIGHT,	
-        BOTTOM_RIGHT,	
-        BOTTOM,	
-        BOTTOM_LEFT,	
+        CENTER,
+        TOP_LEFT,
+        TOP,
+        TOP_RIGHT,
+        RIGHT,
+        BOTTOM_RIGHT,
+        BOTTOM,
+        BOTTOM_LEFT,
         LEFT
     }
 
@@ -311,11 +311,13 @@ declare module 'openseadragon'{
         loadTilesWithAjax?: boolean,
         axajHeaders?: object
     }
-  
+
     export type TileSourceOptions = {
         url?: string,
         referenceStripThumbnailUrl?: string,
         success?: (event)=>void,
+        ajaxWithCredentials?: boolean,
+        ajaxHeaders?: object,
         width?: number,
         height?: number,
         tileSize? : number,
@@ -508,13 +510,13 @@ declare module 'openseadragon'{
         }[])
     }
 
-   
+
 
     export interface MouseTrackerOptions{
         element	: Element | string,
         startDisabled ? : boolean,
-        clickTimeThreshold ? : number,	
-        clickDistThreshold ? : number,	
+        clickTimeThreshold ? : number,
+        clickDistThreshold ? : number,
         dblClickTimeThreshold ? : number,
         dblClickDistThreshold ? : number,
         stopDelay ? : number,
@@ -539,8 +541,8 @@ declare module 'openseadragon'{
         userData ? : object,
     }
     export class MouseTracker {
-        clickTimeThreshold : number;	
-        clickDistThreshold : number;	
+        clickTimeThreshold : number;
+        clickDistThreshold : number;
         dblClickTimeThreshold : number;
         dblClickDistThreshold : number;
         element	: Element;
@@ -845,7 +847,7 @@ declare module 'openseadragon'{
         imageToViewportCoordinates(imageX : number, imageY : number, current ? : boolean) : Point;
         imageToViewportRectangle(imageX : number, imageY ?: number, pixelWidth ? : number, pixelHeight ? : number, current ? : boolean) : Rect;
         imageToViewportRectangle(position : Rect, pixelWidth ? : number, pixelHeight ? : number, current ? : boolean) : Rect;
-        
+
         imageToViewportZoom(imageZoom : number) : number;
         imageToWindowCoordinates(pixel : Point) : Point;
         needsDraw() : boolean;
@@ -946,7 +948,7 @@ declare module 'openseadragon'{
         viewport : Viewport;
         world : World;
         referenceStrip : ReferenceStrip;
-        
+
         constructor(options : Options)
         _cancelPendingImages() : void;
         addHandler(eventName : ViewerEventName,callback:(event)=>any,userData? : object) : void;
@@ -1065,9 +1067,9 @@ declare module 'openseadragon'{
         zoomBy(factor : number, refPoint ? : Point, immediately ? : boolean) : Viewport;
         zoomTo(factor : number, refPoint ? : Point, immediately ? : boolean) : Viewport;
     }
-  
+
     export class World extends EventSource{
-        
+
         constructor(options : object);
 
         addHandler(eventName : WorldEventName, callback : (event)=>void, userData ?: object) : void;
@@ -1107,7 +1109,7 @@ declare module 'openseadragon'{
     // TODO: use proper eventName type aliases, and OSDEvent where appropiate
 
     type EventHandler = (event : OSDEvent) => void;
-    
+
     export type ButtonEventName = "blur" | "click" | "enter" | "exit" | "focus" | "press" | "release";
     export type TiledImageEventName = "bounds-change" | "clip-change" | "composite-operation-change" | "fully-loaded-change" | "opacity-change"
     export type TileSourceEventname = "open-failed" | "ready";
