@@ -197,7 +197,7 @@ declare module 'openseadragon'{
     export interface Options{
         id? : string,
         element ? : HTMLElement,
-        tileSources ?: string | TileSource[],
+        tileSources ?: string | string[] | TileSource[],
         tabIndex ? : number,
         overlays? : any[],
         prefixUrl? : string,
@@ -232,7 +232,7 @@ declare module 'openseadragon'{
         minScrollDeltaTime?: number,
         pixelsPerWheelLine?: number,
         pixelsPerArrowPress?: number,
-        visibilityRatio?: boolean,
+        visibilityRatio?: number,
         viewportMargins?: object,
         imageLoaderLimit?: number,
         clickTimeThreshold?: number,
