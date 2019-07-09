@@ -309,7 +309,8 @@ declare module 'openseadragon'{
         crossOriginPolicy?: "Anonymous" | "use-credentials" | false,
         ajaxWithCredentials?: boolean,
         loadTilesWithAjax?: boolean,
-        axajHeaders?: object
+        axajHeaders?: object,
+        imageSmoothingEnabled?: boolean
     }
 
     export type TileSourceOptions = {
@@ -1048,7 +1049,7 @@ declare module 'openseadragon'{
         resize() : Viewport;
         setFlip(state : boolean) : Viewport;
         setMargins(margins : object) : void;
-        setRotation() : Viewport;
+        setRotation(degrees : number) : Viewport;
         toggleFlip() : Viewport;
         update() : boolean;
         viewerElementToImageCoordinates(pixel : Point) : Point;
