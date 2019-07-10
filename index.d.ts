@@ -677,7 +677,8 @@ declare module 'openseadragon'{
         y : number;
         width : number;
         height : number;
-        constructor(x ?: number, y ?: number, width ?: number, height ?: number);
+        degrees : number;
+        constructor(x ?: number, y ?: number, width ?: number, height ?: number, degrees ?: number);
         clone() : Rect;
         containsPoint(point : Point, epsilon? : number) : boolean;
         equals(rectangle : Rect) : boolean;
