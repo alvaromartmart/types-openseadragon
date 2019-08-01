@@ -1,4 +1,11 @@
-declare module 'openseadragon'{
+// Type definitions for parse 2.1.0
+// Project: https://openseadragon.github.io/
+// Definitions by:  Álvaro Martínez <https://github.com/alvaromartmart>
+//                  RobertYost <https://github.com/RobertYost>
+// Definitions: https://github.com/alvaromartmart/types-openseadragon
+// TypeScript Version: 3.5.2
+
+export module OpenSeadragon{
 
     export class Browser {
         vendor : BROWSERS;

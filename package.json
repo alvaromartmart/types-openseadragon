@@ -2,7 +2,7 @@
   "name": "@types/openseadragon",
   "version": "0.0.7",
   "dependencies": {
-    "openseadragon": "*"
+    "openseadragon": "^2.4.0"
   },
   "description": "Types declaration file for OpenSeadragon",
   "main": "",
@@ -14,7 +14,9 @@
     "url": "git+https://github.com/alvaromartmart/types-openseadragon.git"
   },
   "keywords": [
-    "openseadragon"
+    "openseadragon",
+    "dzi",
+    "deep zoom"
   ],
   "author": "Álvaro Martínez",
   "license": "ISC",
