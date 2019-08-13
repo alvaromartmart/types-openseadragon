@@ -984,7 +984,7 @@ declare module 'openseadragon'{
         setFullScreen(fullScreen : boolean) : Viewer;
         setMouseNavEnabled(enabled : boolean) : Viewer;
         setVisible(visible : boolean) : Viewer;
-        updateOverlay(element : Element | string, location : Point | Rect, placement : Placement) : Viewer;
+        updateOverlay(element : Element | string, location : Point | Rect, placement ?: Placement) : Viewer;
     }
 
     export class Viewport{
