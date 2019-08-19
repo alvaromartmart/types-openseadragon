@@ -316,7 +316,8 @@ export module OpenSeadragon{
         crossOriginPolicy?: "Anonymous" | "use-credentials" | false,
         ajaxWithCredentials?: boolean,
         loadTilesWithAjax?: boolean,
-        axajHeaders?: object
+        axajHeaders?: object,
+        imageSmoothingEnabled?: boolean
     }
 
     export type TileSourceOptions = {
@@ -683,7 +684,8 @@ export module OpenSeadragon{
         y : number;
         width : number;
         height : number;
-        constructor(x ?: number, y ?: number, width ?: number, height ?: number);
+        degrees : number;
+        constructor(x ?: number, y ?: number, width ?: number, height ?: number, degrees ?: number);
         clone() : Rect;
         containsPoint(point : Point, epsilon? : number) : boolean;
         equals(rectangle : Rect) : boolean;
@@ -991,7 +993,7 @@ export module OpenSeadragon{
         setFullScreen(fullScreen : boolean) : Viewer;
         setMouseNavEnabled(enabled : boolean) : Viewer;
         setVisible(visible : boolean) : Viewer;
-        updateOverlay(element : Element | string, location : Point | Rect, placement : Placement) : Viewer;
+        updateOverlay(element : Element | string, location : Point | Rect, placement ?: Placement) : Viewer;
     }
 
     export class Viewport{
@@ -1055,7 +1057,7 @@ export module OpenSeadragon{
         resize() : Viewport;
         setFlip(state : boolean) : Viewport;
         setMargins(margins : object) : void;
-        setRotation() : Viewport;
+        setRotation(degrees : number) : Viewport;
         toggleFlip() : Viewport;
         update() : boolean;
         viewerElementToImageCoordinates(pixel : Point) : Point;
