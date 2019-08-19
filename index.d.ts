@@ -1,7 +1,8 @@
-// Type definitions for parse 2.1.0
+// Type definitions for OpenSeadragon 2.4.1
 // Project: https://openseadragon.github.io/
 // Definitions by:  Álvaro Martínez <https://github.com/alvaromartmart>
 //                  RobertYost <https://github.com/RobertYost>
+//                  Jasper Staab <https://github.com/jstaab>
 // Definitions: https://github.com/alvaromartmart/types-openseadragon
 // TypeScript Version: 3.5.2
 
