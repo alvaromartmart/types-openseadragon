@@ -1,6 +1,6 @@
 {
   "name": "@types/openseadragon",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "dependencies": {
     "openseadragon": "^2.4.0"
   },
