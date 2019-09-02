@@ -205,7 +205,19 @@ declare namespace OpenSeadragon{
     export interface Options{
         id? : string,
         element ? : HTMLElement,
-        tileSources ?: string | string[] | TileSource[],
+        tileSources ?: string | string[] | TileSource[] | {
+            Image: {
+                xmlns?: string,
+                Url: string,
+                Format: string,
+                Overlap: string,
+                TileSize: string,
+                Size: {
+                    Width:  string,
+                    Height: string
+                }
+              }
+            },
         tabIndex ? : number,
         overlays? : any[],
         prefixUrl? : string,
