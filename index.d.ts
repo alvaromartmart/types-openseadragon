@@ -6,7 +6,7 @@
 // Definitions: https://github.com/alvaromartmart/types-openseadragon
 // TypeScript Version: 3.5.2
 
-export module OpenSeadragon{
+declare namespace OpenSeadragon{
 
     export class Browser {
         vendor : BROWSERS;
@@ -1132,4 +1132,8 @@ export module OpenSeadragon{
         clientX ? : number,
         clientY ? : number
     }
-  }
+}
+
+declare module 'openseadragon'{
+    export = OpenSeadragon
+}
