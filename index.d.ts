@@ -5,8 +5,7 @@
 //                  Jasper Staab <https://github.com/jstaab>
 // Definitions: https://github.com/alvaromartmart/types-openseadragon
 // TypeScript Version: 3.5.2
-
-declare namespace OpenSeadragon{
+declare module 'openseadragon'{
 
     export class Browser {
         vendor : BROWSERS;
@@ -1144,8 +1143,4 @@ declare namespace OpenSeadragon{
         clientX ? : number,
         clientY ? : number
     }
-}
-
-declare module 'openseadragon'{
-    export = OpenSeadragon
 }
