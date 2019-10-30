@@ -1138,7 +1138,7 @@ declare module 'openseadragon'{
     export type WorldEventName = "add-item" | "item-index-change" | "metrics-change" | "remove-item";
 
     interface OSDEvent extends Event{
-        originalEvent : object,
+        originalEvent : Event,
         position ? : Point,
         clientX ? : number,
         clientY ? : number
