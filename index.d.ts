@@ -94,15 +94,15 @@ declare module 'openseadragon'{
 
     export function addClass(element : Element | string, className : string) : void;
 
-    export function addEvent(element : Element | string, eventName : string, handler : (event)=>void, useCapture ? : boolean) : void;
+    export function addEvent(element : Element | string, eventName : string, handler : (event: Event)=>void, useCapture ? : boolean) : void;
 
     export function cancelEvent(event ? : OSDEvent) : void;
 
     export function capitalizeFirstLetter(value : string) : string;
 
-    export function createCallback(object : object, method : (...args)=>void, ...args) : (...args)=>void;
+    export function createCallback(object : object, method : (...args: any[])=>void, ...args: any[]) : (...args: any[])=>void;
 
-    export function delegate(object : object, method : (...args)=>void) : (object, ...args)=>void; // REVIEW: unsure of return type
+    export function delegate(object : object, method : (...args: any[])=>void) : (object: any, ...args: any[])=>void; // REVIEW: unsure of return type
 
     export function extend() : any;
 
@@ -165,13 +165,13 @@ declare module 'openseadragon'{
 
     export function setElementOpacity(element : Element | string, opacity : number, usesAlpha ? : boolean):void;
 
-    export function setElementTouchActionNone(element : Element | string)
+    export function setElementTouchActionNone(element : Element | string): void;
 
-    export function setPageScroll(point : Point)
+    export function setPageScroll(point : Point): void;
 
-    export function setString(property : string, value : any)
+    export function setString(property : string, value : any): void;
 
-    export function stopEvent(event ? : OSDEvent)
+    export function stopEvent(event ? : OSDEvent): void;
 
     export interface GestureSettings{
         scrollToZoom	?: boolean,
@@ -335,7 +335,7 @@ declare module 'openseadragon'{
     export type TileSourceOptions = {
         url?: string,
         referenceStripThumbnailUrl?: string,
-        success?: (event)=>void,
+        success?: (event: Event)=>void,
         ajaxWithCredentials?: boolean,
         ajaxHeaders?: object,
         width?: number,
@@ -378,7 +378,7 @@ declare module 'openseadragon'{
         addOnceHandler(eventName : ButtonEventName, handler : EventHandler, userData ? : object, times ? : number) : void;
         disable() : void;
         enable() : void;
-        getHandler(eventName : ButtonEventName) : (source : ButtonEventName, ...args)=>void;
+        getHandler(eventName : ButtonEventName) : (source : ButtonEventName, ...args: any[])=>void;
         raiseEvent(eventName : ButtonEventName, eventArgs : object) : void;
         removeAllHandlers(eventName : ButtonEventName) : void;
         removeHandler(eventName : ButtonEventName, handler : EventHandler) : void;
@@ -467,7 +467,7 @@ declare module 'openseadragon'{
         destroy() : void;
         drawTile(
             tile:  Tile,
-            drawingHandler : (context,tile,rendered)=>void, //TODO: determine handler parameter types
+            drawingHandler : (context: CanvasRenderingContext2D, tile: any, rendered: any)=>void, //TODO: determine handler parameter types
             useSketch : boolean,
             scale ? : number,
             translate ? : Point
@@ -788,7 +788,7 @@ declare module 'openseadragon'{
             ajaxHeaders : object,
             sourceBounds : Rect
         );
-        drawCanvas(context : CanvasRenderingContext2D, drawingHandler : (context,tile,rendered)=>void, scale ?: number, translate ?: Point) : void;
+        drawCanvas(context : CanvasRenderingContext2D, drawingHandler : (context: CanvasRenderingContext2D, tile: any, rendered: any)=>void, scale ?: number, translate ?: Point) : void;
         drawHTML(container : Element) : void;
         getScaleForEdgeSmoothing() : number;
         getTranslationForEdgeSmoothing(scale ?: number) : Point;
@@ -859,7 +859,7 @@ declare module 'openseadragon'{
         getCompositeOperation() : string;
         getContentSize() : Point;
         getFullyLoaded() : boolean;
-        getHandler(eventName : string) : (source, ...args)=>void;
+        getHandler(eventName : string) : (source: Event, ...args: any[])=>void;
         getOpacity() : number;
         getPreload() : boolean;
         getRotation(current ? : boolean) : number;
@@ -906,7 +906,7 @@ declare module 'openseadragon'{
         addOnceHandler(eventName : string, handler : EventHandler, userData ?: object, times ?: number) : void;
         configure(data : string | object | any[] | Document) : object;
         getClosestLevel() : number;
-        getHandler(eventName : string) : (event)=>void;
+        getHandler(eventName : string) : (event: Event)=>void;
         getImageInfo(url : string) : void;
         getLevelScale(level : number) : number;
         getNumTiles(level : number) : number;
@@ -919,7 +919,7 @@ declare module 'openseadragon'{
         getTileWidth(level : number) : number;
         raiseEvent(eventName : string, eventArgs : object) : void;
         removeAllHandlers(eventName : string) : void;
-        removeHandler(eventName : string, handler : (event)=>void):void;
+        removeHandler(eventName : string, handler : (event: Event)=>void):void;
         supports(data : string | object | any[] | Document, url : string) : boolean;
         tileExists(level : number, x : number, y : number) : boolean;
     }
@@ -953,8 +953,8 @@ declare module 'openseadragon'{
         ajaxWithCredentials ?: boolean,
         loadTilesWithAjax ?: boolean,
         ajaxHeaders ?: object,
-        success ?: (event)=>void,
-        error ?: (error)=>void,
+        success ?: (event: Event)=>void,
+        error ?: (error: Error)=>void,
         collectionImmediately ?: boolean,
         placeholderFillStyle ?: string | CanvasGradient | CanvasPattern
     }
@@ -972,8 +972,8 @@ declare module 'openseadragon'{
 
         constructor(options : Options)
         _cancelPendingImages() : void;
-        addHandler(eventName : ViewerEventName,callback:(event)=>any,userData? : object) : void;
-        addOnceHandler(eventName : ViewerEventName,callback:(event)=>any,userData? : object, times?:number) : void;
+        addHandler(eventName : ViewerEventName,callback:(event: Event)=>any,userData? : object) : void;
+        addOnceHandler(eventName : ViewerEventName,callback:(event: Event)=>any,userData? : object, times?:number) : void;
         addOverlay(element : HTMLElement | string | object, location ? : Point | Rect, placement ? : Placement, onDraw ? : (element : HTMLElement, location : Location, placement : Placement)=>void) : Viewer;
         addReferenceStrip() : void;
         addSimpleImage(options :TiledImageOptions) : void; //TODO: check options type
@@ -986,7 +986,7 @@ declare module 'openseadragon'{
         destroy() : void;
         forceRedraw() : Viewer;
         gestureSettingsByDeviceType(type : string) : GestureSettings;
-        getHandler(eventName : string) : (event)=>void;
+        getHandler(eventName : string) : (event: Event)=>void;
         getOverlayById(element : Element | string) : Overlay;
         goToPage(page : number) : Viewer;
         isFullPage() : boolean;
@@ -996,7 +996,7 @@ declare module 'openseadragon'{
         open(tileSources : string | object | TileSource[],initialPage ?: number) : Viewer;
         raiseEvent(eventName : string, eventArgs ?: object) : void;
         removeAllHandlers(eventName : string) : void;
-        removeHandler(eventName : string, handler : (event)=>void) : void;
+        removeHandler(eventName : string, handler : (event: Event)=>void) : void;
         removeOverlay(overlay : Element | string) : Viewer;
         removeReferenceStrip() : void;
         setControlsEnabled(enabled : boolean) : Viewer;
@@ -1093,7 +1093,7 @@ declare module 'openseadragon'{
 
         constructor(options : object);
 
-        addHandler(eventName : WorldEventName, callback : (event)=>void, userData ?: object) : void;
+        addHandler(eventName : WorldEventName, callback : (event: Event)=>void, userData ?: object) : void;
         addItem(item : TiledImage, options ?: {index ?: number}) : void;
         addOnceHandler(eventName : string, handler : EventHandler, userData ?: object, times ?: number) : void;
         arrange(options : {
@@ -1106,7 +1106,7 @@ declare module 'openseadragon'{
         }) : void;
         draw() : void;
         getContentFactor() : number;
-        getHandler(eventName : string) : (event)=>void;
+        getHandler(eventName : string) : (event: Event)=>void;
         getHomeBounds() : Rect;
         getIndexOfItem(item : TiledImage) : number;
         getItemAt(id : number) : TiledImage;
@@ -1115,7 +1115,7 @@ declare module 'openseadragon'{
         raiseEvent(eventName : string, eventArgs ?: object) : void;
         removeAll() : void;
         removeAllHandlers(eventName : string) : void;
-        removeHandler(eventName: string, handler : (event)=>void) : void;
+        removeHandler(eventName: string, handler : (event: Event)=>void) : void;
         removeItem(item : TiledImage) : void;
         resetItems() : void;
         setAutoRefigureSizes(value ?: boolean) : void;
