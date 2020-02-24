@@ -1459,4 +1459,4 @@ interface WorldEvent extends OSDEvent<World> {
   newIndex?: number;
 }
 
-export default Viewer;
+export default function(options: Options): Viewer;
