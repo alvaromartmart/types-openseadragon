@@ -377,7 +377,7 @@ export interface Options {
   crossOriginPolicy?: "Anonymous" | "use-credentials" | false;
   ajaxWithCredentials?: boolean;
   loadTilesWithAjax?: boolean;
-  axajHeaders?: object;
+  ajaxHeaders?: object;
   imageSmoothingEnabled?: boolean;
 }
 
