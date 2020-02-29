@@ -5,6 +5,7 @@
 //                  Jasper Staab <https://github.com/jstaab>
 //                  Kristin Ruben <https://github.com/kristinruben>
 //                  Geoff Harper <https://github.com/geoff-harper>
+//                  Justin <https://github.com/justincy>
 // Definitions: https://github.com/alvaromartmart/types-openseadragon
 // TypeScript Version: 3.5
 /// <reference types="node"/>
