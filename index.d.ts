@@ -237,6 +237,7 @@ export interface Options {
       | string
       | string[]
       | TileSource[]
+      | TileSourceOptions
       | {
             Image: {
                 xmlns?: string;
