@@ -7,8 +7,7 @@
 //                  Geoff Harper <https://github.com/geoff-harper>
 //                  Justin <https://github.com/justincy>
 // Definitions: https://github.com/alvaromartmart/types-openseadragon
-// TypeScript Version: 3.5
-/// <reference types="node"/>
+// TypeScript Version: 3.1
 export class Browser {
   vendor: BROWSERS;
   version: number;
@@ -213,7 +212,7 @@ export interface GestureSettings {
   flickMomentum?: number;
 }
 
-interface NavImagesValues {
+export interface NavImagesValues {
   REST: string;
   GROUP: string;
   HOVER: string;
@@ -239,6 +238,14 @@ export interface Options {
       | string[]
       | TileSource[]
       | TileSourceOptions
+      | {
+          type: string;
+          levels: Array<{
+              url: string;
+              height: number;
+              width: number;
+          }>
+      }
       | {
             Image: {
                 xmlns?: string;
@@ -443,7 +450,10 @@ export class Button extends EventSource {
   ): (source: ButtonEventName, ...args: any[]) => void;
   raiseEvent(eventName: ButtonEventName, eventArgs: object): void;
   removeAllHandlers(eventName: ButtonEventName): void;
-  removeHandler(eventName: ButtonEventName, handler: EventHandler<ButtonEvent>): void;
+  removeHandler(
+      eventName: ButtonEventName,
+      handler: EventHandler<ButtonEvent>
+  ): void;
 }
 
 export class ButtonGroup {
@@ -582,7 +592,7 @@ export class ImageTileSource extends TileSource {
 
 export class LegacyTileSource extends TileSource {
   constructor(
-      levels: Array<{
+      levels?: Array<{
           url: string;
           width: number;
           height: number;
@@ -670,7 +680,7 @@ export interface GesturePoint {
   currentTime: number;
 }
 
-declare class GesturePointList {
+export class GesturePointList {
   buttons: Button[];
   captureCount: number;
   clicks: number;
@@ -706,7 +716,7 @@ export class OsmTileSource extends TileSource {
   );
 }
 
-type OnDrawCallback = (
+export type OnDrawCallback = (
   position: Point,
   size: Point,
   element: HTMLElement
@@ -969,7 +979,10 @@ export class TiledImage {
   needsDraw(): boolean;
   raiseEvent(eventName: string, eventArgs: object): void;
   removeAllHandlers(eventName: string): void;
-  removeHandler(eventName: string, handler: EventHandler<TiledImageEvent>): void;
+  removeHandler(
+      eventName: string,
+      handler: EventHandler<TiledImageEvent>
+  ): void;
   reset(): void;
   setClip(newClip: Rect | null): void;
   setCompositeOperation(compositeOperation: string): void;
@@ -1053,7 +1066,7 @@ export class TmsTileSource extends TileSource {
   );
 }
 
-interface TiledImageOptions {
+export interface TiledImageOptions {
   tileSource: string | object;
   index?: number;
   replace?: boolean;
@@ -1207,11 +1220,11 @@ export class Viewport {
       pixelHeight: number
   ): Point;
   imageToViewportRectangle(
-    imageX: number | Rect,
-    imageY?: number,
-    pixelWidth?: number,
-    pixelHeight?: number
-  ): Rect;
+      imageX: number | Rect,
+      imageY?: number,
+      pixelWidth?: number,
+      pixelHeight?: number
+  ): Rect;
   imageToViewportZoom(imageZoom: number): number;
   imageToWindowCoordinates(pixel: Point): Point;
   panBy(delta: Point, immediately?: boolean): Viewport;
@@ -1302,7 +1315,7 @@ export class ZoomifyTileSource extends TileSource {
 
 // TODO: use proper eventName type aliases, and OSDEvent where appropiate
 
-type EventHandler<T extends OSDEvent<any>> = (event: T) => void;
+export type EventHandler<T extends OSDEvent<any>> = (event: T) => void;
 
 export type ButtonEventName =
   | "blur"
@@ -1380,28 +1393,28 @@ export type WorldEventName =
   | "metrics-change"
   | "remove-item";
 
-interface OSDEvent<T> extends Event {
+export interface OSDEvent<T> extends Event {
   eventSource?: T;
   userData: any;
 }
 
-interface ButtonEvent extends OSDEvent<Button> {
+export interface ButtonEvent extends OSDEvent<Button> {
   originalEvent: Event;
 }
 
-interface TiledImageEvent extends OSDEvent<TiledImage> {
+export interface TiledImageEvent extends OSDEvent<TiledImage> {
   compositeOperationChange?: string;
   fullyLoaded?: boolean;
   opacity?: boolean;
 }
 
-interface TileSourceEvent extends OSDEvent<TileSource> {
+export interface TileSourceEvent extends OSDEvent<TileSource> {
   message?: string;
   source?: string;
   tileSource?: object;
 }
 
-interface ViewerEvent extends OSDEvent<Viewer> {
+export interface ViewerEvent extends OSDEvent<Viewer> {
   message?: string;
   source?: string;
   options?: object;
@@ -1455,7 +1468,7 @@ interface ViewerEvent extends OSDEvent<Viewer> {
   zoom?: number;
 }
 
-interface WorldEvent extends OSDEvent<World> {
+export interface WorldEvent extends OSDEvent<World> {
   item?: TiledImage;
   previousIndex?: number;
   newIndex?: number;
