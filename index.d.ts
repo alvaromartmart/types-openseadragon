@@ -1474,4 +1474,8 @@ export interface WorldEvent extends OSDEvent<World> {
   newIndex?: number;
 }
 
-export default function(options: Options): Viewer;
+export as namespace OpenSeadragon;
+
+declare function OpenSeadragon(options: OpenSeadragon.Options): Viewer;
+
+export default OpenSeadragon;
