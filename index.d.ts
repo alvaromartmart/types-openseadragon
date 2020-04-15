@@ -555,12 +555,16 @@ export class DziTileSource extends TileSource {
       height: number,
       tileSize: number,
       tileOverlap: number,
-      tilesUrl: number,
-      fileFormat: number,
-      displayRects: number,
-      minLevel: number,
-      maxLevel: number
+      tilesUrl: string,
+      fileFormat: string,
+      displayRects?: DisplayRect[],
+      minLevel?: number,
+      maxLevel?: number
   );
+
+  tilesUrl: string;
+  fileFormat: string;
+  displayRects?: DisplayRect[];
 }
 
 export class IIIFTileSource extends TileSource {}
